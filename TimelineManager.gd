@@ -13,8 +13,11 @@ var frame_num: int = 0
 func _ready() -> void:
     # TODO create new timeline if needed (always do this for now)
     timelines.append(Timeline.new())
-    timelines.append(Timeline.new())
 
+    _create_ships()
+
+
+func _create_ships() -> void:
     # Spawn in a ship for each timeline
     ships = []
     for tl in timelines:
@@ -24,6 +27,17 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+    # Test code for now:
+    # Reset to time 0 and create a new timeline
+    if Input.is_action_just_pressed("timeline"):
+        frame_num = 0
+        for ship in ships:
+            remove_child(ship)
+            ship.queue_free()
+        timelines.append(Timeline.new())
+        live_timeline = len(timelines) - 1
+        _create_ships()
+
     # Get inputs and append to 'live' timeline if changed
     timelines[live_timeline].set_state(frame_num, InputManager.get_state())
 
