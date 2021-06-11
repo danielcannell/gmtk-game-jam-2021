@@ -1,9 +1,9 @@
 extends Area2D
 
 
-const HORIZONTAL_SPEED = 100
-const FORWARD_SPEED = 100
-const REVERSE_SPEED = 100
+const HORIZONTAL_SPEED = 300
+const FORWARD_SPEED = 200
+const REVERSE_SPEED = 200
 
 
 func _ready():
@@ -11,7 +11,7 @@ func _ready():
 
 
 func run_step(inputs: InputState, delta: float) -> void:
-    var velocity := Vector2(0, 10)
+    var velocity := Vector2(0, 0)
 
     if inputs.is_pressed(InputType.UP):
         velocity.y -= FORWARD_SPEED
