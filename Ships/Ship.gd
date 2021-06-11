@@ -5,6 +5,14 @@ const HORIZONTAL_SPEED = 300
 const FORWARD_SPEED = 200
 const REVERSE_SPEED = 200
 
+onready var image: AnimatedSprite= $Sprite;
+
+
+enum Frames {
+    FLAT = 0,
+    LEFT = 1,
+    RIGHT = 2,
+}
 
 func _ready():
     pass
@@ -21,6 +29,13 @@ func run_step(inputs: InputState, delta: float) -> void:
         velocity.x -= HORIZONTAL_SPEED
     if inputs.is_pressed(InputType.RIGHT):
         velocity.x += HORIZONTAL_SPEED
+
+    if velocity.x == 0:
+        image.set_frame(Frames.FLAT)
+    elif velocity.x < 0:
+        image.set_frame(Frames.LEFT)
+    else:
+        image.set_frame(Frames.RIGHT)
 
     var screen_size = get_viewport_rect().size
 
