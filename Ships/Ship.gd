@@ -15,7 +15,10 @@ enum Frames {
 }
 
 func _ready():
-    pass
+    var screen_size = get_viewport_rect().size
+
+    position.x = screen_size.x / 2
+    position.y = screen_size.y - 100
 
 
 func run_step(inputs: InputState, delta: float) -> void:
