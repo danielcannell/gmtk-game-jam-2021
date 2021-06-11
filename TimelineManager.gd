@@ -15,14 +15,13 @@ func _ready() -> void:
 
 func _physics_process(_delta: float) -> void:
     # Get inputs and append to 'live' timeline if changed
-    var inputs = InputState.new(InputType.UP | InputType.FIRE)
-    timelines[live_timeline].set_state(frame_num, inputs)
+    timelines[live_timeline].set_state(frame_num, InputManager.get_state())
 
+    print("---")
     for tl in timelines:
         # Get current input state for this ship
         var state = tl.get_state(frame_num)
         print(state.is_pressed(InputType.FIRE))
-        print("---")
 
         # TODO poke current input state into this ship and run tick
 
