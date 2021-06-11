@@ -41,7 +41,6 @@ func _physics_process(delta: float) -> void:
     # Get inputs and append to 'live' timeline if changed
     timelines[live_timeline].set_state(frame_num, InputManager.get_state())
 
-    print("---")
     for i in range(len(timelines)):
         var tl: Timeline = timelines[i]
         var ship: Node2D = ships[i]
