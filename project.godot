@@ -8,6 +8,28 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Reference",
+"class": "InputState",
+"language": "GDScript",
+"path": "res://Types/InputState.gd"
+}, {
+"base": "Reference",
+"class": "InputType",
+"language": "GDScript",
+"path": "res://Types/InputType.gd"
+}, {
+"base": "Reference",
+"class": "Timeline",
+"language": "GDScript",
+"path": "res://Timeline/Timeline.gd"
+} ]
+_global_script_class_icons={
+"InputState": "",
+"InputType": "",
+"Timeline": ""
+}
+
 [application]
 
 config/name="gmtk-game-jam-2021"
