@@ -10,9 +10,20 @@ var enemy = null
 
 
 func _ready():
+    create_enemies()
+
+
+func create_enemies() -> void:
+    # Test code for now
     enemy = Enemy.instance()
     path.add_child(enemy)
 
 
-func _process(delta):
-    enemy.offset += 100 * delta
+
+func _physics_process(delta: float) -> void:
+    # Test code for now:
+    if Input.is_action_just_pressed("timeline"):
+        enemy.queue_free()
+        create_enemies()
+
+    enemy.run_step(delta)

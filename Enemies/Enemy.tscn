@@ -1,12 +1,14 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Art/Ship.png" type="Texture" id=1]
+[ext_resource path="res://Enemies/Enemy.gd" type="Script" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 31.3617
 
 [node name="PathFollow2D" type="PathFollow2D"]
 rotate = false
+script = ExtResource( 2 )
 
 [node name="Node2D" type="Area2D" parent="."]
 
