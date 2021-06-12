@@ -14,6 +14,14 @@ var left_exhaust_init_pos = Vector2();
 var right_exhaust_init_pos = Vector2();
 var exhaust_turn_ofs = Vector2(3, 0);
 
+
+signal fire(position, velocity)
+
+
+const FIRE_VECTOR = Vector2(0, -1)
+const FIRE_SPEED = 20.0;
+
+
 enum Frames {
     FLAT = 0,
     LEFT = 1,
@@ -69,3 +77,7 @@ func run_step(inputs: InputState, delta: float) -> void:
     position += velocity * delta
     position.x = clamp(position.x, 0, screen_size.x)
     position.y = clamp(position.y, 0, screen_size.y)
+
+
+    if inputs.is_pressed(InputType.FIRE):
+        emit_signal("fire", position, FIRE_VECTOR * FIRE_SPEED)

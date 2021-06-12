@@ -3,6 +3,8 @@ extends Node
 
 const Ship = preload("res://Ships/Ship.tscn")
 
+onready var bullet_manager = $"../BulletManager"
+
 
 var live_timeline: int = 0
 var timelines: Array = []
@@ -20,8 +22,10 @@ func _ready() -> void:
 func _create_ships() -> void:
     # Spawn in a ship for each timeline
     ships = []
+    # bullet_manager.spawn_bullet(Vector2(), Vector2(1, 0))
     for tl in timelines:
         var ship := Ship.instance()
+        ship.connect("fire", bullet_manager, "spawn_bullet")
         ships.append(ship)
         add_child(ship)
 
