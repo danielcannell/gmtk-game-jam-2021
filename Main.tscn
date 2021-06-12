@@ -131,12 +131,6 @@ noise = SubResource( 5 )
 [node name="Main" type="Node2D"]
 script = ExtResource( 2 )
 
-[node name="EnemyManager" parent="." instance=ExtResource( 3 )]
-
-[node name="BulletManager" parent="." instance=ExtResource( 4 )]
-position = Vector2( 20.1582, 0 )
-frames = [ ExtResource( 5 ) ]
-
 [node name="Terrian" type="TextureRect" parent="."]
 material = SubResource( 2 )
 margin_left = -64.697
@@ -154,6 +148,12 @@ __meta__ = {
 material = SubResource( 4 )
 position = Vector2( 463.663, 358.935 )
 texture = SubResource( 6 )
+
+[node name="EnemyManager" parent="." instance=ExtResource( 3 )]
+
+[node name="BulletManager" parent="." instance=ExtResource( 4 )]
+position = Vector2( 20.1582, 0 )
+frames = [ ExtResource( 5 ) ]
 
 [node name="TimelineManager" type="Node" parent="."]
 script = ExtResource( 1 )
