@@ -1,7 +1,20 @@
 extends Node
 
 
+const Panel = preload("res://TimelinePanel.tscn")
+
+
 onready var timelines = Globals.timelines
+onready var hbox = $CanvasLayer/HBoxContainer
+
+
+func _ready():
+    for i in len(timelines):
+        var tl = timelines[i] as Timeline
+        var ss = tl.snapshot
+        var p: Control = Panel.instance()
+        p.set_snapshot(ss, i)
+        hbox.add_child(p)
 
 
 func _input(evt):
