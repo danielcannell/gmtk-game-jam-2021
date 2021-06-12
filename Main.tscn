@@ -1,17 +1,158 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://TimelineManager.gd" type="Script" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
 [ext_resource path="res://Enemies/EnemyManager.tscn" type="PackedScene" id=3]
 [ext_resource path="res://BulletManager.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Art/orb.png" type="Texture" id=5]
+[ext_resource path="res://Art/blend-ground.png" type="Texture" id=6]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform float scroll_speed = 0.04;
+
+void fragment(){
+    vec2 shifteduv = UV;
+    shifteduv .x += TIME * scroll_speed;
+    vec4 color = texture(TEXTURE, shifteduv);
+    COLOR = color;
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/scroll_speed = 0.04
+
+[sub_resource type="Shader" id=3]
+code = "shader_type canvas_item;
+
+uniform float scroll_speed = 4.0;
+
+uniform int OCTAVES = 6;
+
+float rand(vec2 coord){
+	return fract(sin(dot(coord, vec2(12.9898, 78.233)))* 43758.5453123);
+}
+
+float noise(vec2 coord){
+	vec2 i = floor(coord);
+	vec2 f = fract(coord);
+
+	// 4 corners of a rectangle surrounding our point
+	float a = rand(i);
+	float b = rand(i + vec2(1.0, 0.0));
+	float c = rand(i + vec2(0.0, 1.0));
+	float d = rand(i + vec2(1.0, 1.0));
+
+	vec2 cubic = f * f * (3.0 - 2.0 * f);
+
+	return mix(a, b, cubic.x) + (c - a) * cubic.y * (1.0 - cubic.x) + (d - b) * cubic.x * cubic.y;
+}
+
+float fbm(vec2 coord){
+	float value = 0.0;
+	float scale = 0.5;
+
+	for(int i = 0; i < OCTAVES; i++){
+		value += noise(coord) * scale;
+		coord *= 2.5;
+		scale *= 0.5;
+	}
+	return value;
+}
+
+
+vec4 blend_over(vec4 top, vec4 bottom) {
+    vec3 col = top.rgb * top.a + bottom.rgb * bottom.a * (1. - top.a);
+    float a = top.a + bottom.a * (1. - top.a);
+    return vec4(col, a);
+}
+
+
+void fragment(){
+    vec2 shifteduv = UV * 4.0;
+    vec2 shifteduv2 = UV * 4.0;
+    shifteduv.y -= TIME * scroll_speed;
+    shifteduv2.y -= TIME * scroll_speed * 2.0;
+    shifteduv2.x += TIME * scroll_speed * 0.04;
+
+    float n1 = fbm(shifteduv);
+    float n2 = fbm(shifteduv2);
+
+    n1 = mix(n1, n2, 0.8);
+
+    vec2 lowerduv = UV * 12.0;
+    lowerduv.y -= TIME * scroll_speed / 3.0;
+    float lower_n = fbm(lowerduv) ;
+    lower_n = mix(lower_n, fbm(lowerduv * 0.9 + vec2(-0.1 * TIME * scroll_speed,  0.1 * TIME * scroll_speed)), 0.1);
+
+    vec2 shadowdec = lowerduv + vec2(0.7, 0.2) + vec2(0.05) * fbm(UV * 12.0);
+    float shadow = fbm(shadowdec);
+    shadow = mix(shadow, fbm(lowerduv * 0.9 + vec2(-0.1 * TIME * scroll_speed,  0.1 * TIME * scroll_speed)), 0.1);
+
+    n1 = smoothstep(0.5, 0.8, n1);
+    lower_n = smoothstep(0.35, 0.75, lower_n);
+    shadow = smoothstep(0.35, 0.75, shadow) * 0.6;
+
+    float n3 = 1. - ((1. - n1) * (1. - lower_n));
+
+    //COLOR = vec4(vec3(n3), 1.0);
+    //COLOR = vec4(1.0);
+    //shadow = 0.;
+    vec3 shadow_col = vec3(0.0);
+    vec3 cloud_col = vec3(1.0);
+
+    float alpha = n3 + shadow * (1.-n3);
+    vec3 col = ((cloud_col * n3) + (shadow_col * shadow)* (1. - n3))/n3;
+
+    COLOR = blend_over(vec4(cloud_col, n3), vec4(shadow_col, shadow));
+    //COLOR = vec4(vec3(col), clamp(alpha, 0., 1.));
+
+    //COLOR = vec4(0.0)
+    //COLOR.a = n3;
+}"
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
+shader_param/scroll_speed = 4.0
+shader_param/OCTAVES = 6
+
+[sub_resource type="OpenSimplexNoise" id=5]
+seed = 11
+octaves = 6
+persistence = 0.397
+
+[sub_resource type="NoiseTexture" id=6]
+width = 1222
+height = 917
+seamless = true
+noise = SubResource( 5 )
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 2 )
 
+[node name="Terrian" type="TextureRect" parent="."]
+material = SubResource( 2 )
+margin_left = -64.697
+margin_top = 1413.22
+margin_right = 2435.3
+margin_bottom = 2538.22
+rect_rotation = -90.0
+texture = ExtResource( 6 )
+stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="Sprite" parent="."]
+material = SubResource( 4 )
+position = Vector2( 463.663, 358.935 )
+texture = SubResource( 6 )
+
 [node name="EnemyManager" parent="." instance=ExtResource( 3 )]
 
 [node name="BulletManager" parent="." instance=ExtResource( 4 )]
+position = Vector2( 20.1582, 0 )
 frames = [ ExtResource( 5 ) ]
 
 [node name="TimelineManager" type="Node" parent="."]

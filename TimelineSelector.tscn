@@ -39,8 +39,6 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="CanvasLayer/HBoxContainer/PanelContainer/VBoxContainer"]
-anchor_left = -0.0135135
-anchor_right = -0.0135135
 margin_right = 74.0
 margin_bottom = 14.0
 text = "Description"
