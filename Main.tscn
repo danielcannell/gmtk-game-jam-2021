@@ -75,39 +75,39 @@ void fragment(){
     shifteduv.y -= TIME * scroll_speed;
     shifteduv2.y -= TIME * scroll_speed * 2.0;
     shifteduv2.x += TIME * scroll_speed * 0.04;
-    
+
     float n1 = fbm(shifteduv);
     float n2 = fbm(shifteduv2);
-    
+
     n1 = mix(n1, n2, 0.8);
-    
+
     vec2 lowerduv = UV * 12.0;
     lowerduv.y -= TIME * scroll_speed / 3.0;
     float lower_n = fbm(lowerduv) ;
     lower_n = mix(lower_n, fbm(lowerduv * 0.9 + vec2(-0.1 * TIME * scroll_speed,  0.1 * TIME * scroll_speed)), 0.1);
-    
+
     vec2 shadowdec = lowerduv + vec2(0.7, 0.2) + vec2(0.05) * fbm(UV * 12.0);
     float shadow = fbm(shadowdec);
     shadow = mix(shadow, fbm(lowerduv * 0.9 + vec2(-0.1 * TIME * scroll_speed,  0.1 * TIME * scroll_speed)), 0.1);
-    
+
     n1 = smoothstep(0.5, 0.8, n1);
     lower_n = smoothstep(0.35, 0.75, lower_n);
     shadow = smoothstep(0.35, 0.75, shadow) * 0.6;
-    
+
     float n3 = 1. - ((1. - n1) * (1. - lower_n));
-    
+
     //COLOR = vec4(vec3(n3), 1.0);
     //COLOR = vec4(1.0);
     //shadow = 0.;
     vec3 shadow_col = vec3(0.0);
     vec3 cloud_col = vec3(1.0);
-    
+
     float alpha = n3 + shadow * (1.-n3);
     vec3 col = ((cloud_col * n3) + (shadow_col * shadow)* (1. - n3))/n3;
 
     COLOR = blend_over(vec4(cloud_col, n3), vec4(shadow_col, shadow));
     //COLOR = vec4(vec3(col), clamp(alpha, 0., 1.));
-    
+
     //COLOR = vec4(0.0)
     //COLOR.a = n3;
 }"
@@ -130,9 +130,6 @@ noise = SubResource( 7 )
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 2 )
-
-[node name="TimelineStore" type="Node" parent="."]
-script = ExtResource( 1 )
 
 [node name="EnemyManager" parent="." instance=ExtResource( 3 )]
 
@@ -157,3 +154,5 @@ __meta__ = {
 material = SubResource( 4 )
 position = Vector2( 463.663, 358.935 )
 texture = SubResource( 6 )
+[node name="TimelineManager" type="Node" parent="."]
+script = ExtResource( 1 )

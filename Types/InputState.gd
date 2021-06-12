@@ -1,4 +1,5 @@
 class_name InputState
+extends Reference
 
 var _state: int = 0
 

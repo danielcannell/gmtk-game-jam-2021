@@ -9,6 +9,15 @@ onready var area: Area2D = $Area2D
 onready var bullet_manager: BulletManager = $"../../../BulletManager"
 
 var health := MAX_HP
+var fire_cooldown := 0
+
+
+signal fire(position, velocity)
+
+
+const FIRE_VECTOR = Vector2(0, 1)
+const FIRE_SPEED = 600.0
+const FIRE_COOLDOWN = 5
 
 
 func _ready():
@@ -22,12 +31,24 @@ func _physics_process(delta: float) -> void:
 
     if unit_offset > 0.99:
         queue_free()
+        return
+
+    if fire_cooldown == 0:
+        emit_signal("fire", global_position, FIRE_VECTOR * FIRE_SPEED, false)
+        fire_cooldown = FIRE_COOLDOWN
+
+    if fire_cooldown > 0:
+        fire_cooldown -= 1
+
+    if health <= 0:
+        queue_free()
 
 
 func _on_area_shape_entered(_area_id: int, _area: Area2D, area_shape: int, _local_shape: int) -> void:
     var bullet = bullet_manager.get_bullet(area_shape)
-    bullet.dead = true
-    set_health(health - bullet.damage)
+    if bullet.is_player:
+        bullet.dead = true
+        set_health(health - bullet.damage)
 
 
 func set_health(new_health: float) -> void:
