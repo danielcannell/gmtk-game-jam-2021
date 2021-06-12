@@ -212,6 +212,7 @@ scale_random = 0.25
 scale_curve = SubResource( 2 )
 
 [node name="Node2D" type="Node2D"]
+position = Vector2( 1.68176, -3.78403 )
 script = ExtResource( 2 )
 
 [node name="Scaler" type="Node2D" parent="."]
