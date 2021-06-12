@@ -76,8 +76,11 @@ func _physics_process(delta: float) -> void:
             continue
 
         # De-spawn ships when they reach the end of their timeline
+        #
+        # TODO: We also need to do this when a ship dies!
         if tl.snapshot != null:
             if frame_num > tl.snapshot["frame_num"]:
+                tl.snapshot = _make_snapshot()
                 ship.queue_free()
 
         # Get current input state for this ship and run tick

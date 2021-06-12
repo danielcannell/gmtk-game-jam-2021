@@ -6,6 +6,7 @@ const MAX_HP = 100.0
 
 onready var health_bar: Node2D = $HealthBar
 onready var area: Area2D = $Area2D
+onready var bullet_manager: BulletManager = $"../../../BulletManager"
 
 var health := MAX_HP
 
@@ -22,9 +23,13 @@ func _physics_process(delta: float) -> void:
     if unit_offset > 0.99:
         queue_free()
 
-    health -= 5 * delta
+
+func _on_area_shape_entered(_area_id: int, _area: Area2D, area_shape: int, _local_shape: int) -> void:
+    var bullet = bullet_manager.get_bullet(area_shape)
+    bullet.dead = true
+    set_health(health - bullet.damage)
+
+
+func set_health(new_health: float) -> void:
+    health = new_health
     health_bar.set_fraction(health / MAX_HP)
-
-
-func _on_area_shape_entered(area_id: int, _area: Area2D, area_shape: int, _local_shape: int) -> void:
-    print(area_id, " - ", area_shape)

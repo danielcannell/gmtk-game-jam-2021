@@ -26,7 +26,7 @@ signal fire(position, velocity)
 
 
 const FIRE_VECTOR = Vector2(0, -1)
-const FIRE_SPEED = 400.0
+const FIRE_SPEED = 600.0
 const FIRE_COOLDOWN = 5
 
 
