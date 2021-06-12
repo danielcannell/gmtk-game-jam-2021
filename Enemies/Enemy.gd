@@ -23,9 +23,6 @@ func _physics_process(delta: float) -> void:
     if unit_offset > 0.99:
         queue_free()
 
-    health -= 5 * delta
-    set_health(health)
-
 
 func _on_area_shape_entered(area_id: int, _area: Area2D, area_shape: int, _local_shape: int) -> void:
     print(area_id, " - ", area_shape)
