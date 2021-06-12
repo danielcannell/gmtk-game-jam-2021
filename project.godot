@@ -51,8 +51,12 @@ _global_script_class_icons={
 [application]
 
 config/name="gmtk-game-jam-2021"
-run/main_scene="res://Main.tscn"
+run/main_scene="res://TimelineSelector.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Globals="*res://Globals.gd"
 
 [display]
 

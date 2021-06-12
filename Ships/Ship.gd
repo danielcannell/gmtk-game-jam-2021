@@ -5,10 +5,15 @@ const HORIZONTAL_SPEED = 300
 const FORWARD_SPEED = 200
 const REVERSE_SPEED = 200
 
-onready var image: AnimatedSprite= $Sprite;
+const MAX_HP = 100.0
+
 onready var left_exhuast = $LeftExhaust;
 onready var right_exhuast = $RightExhaust;
 
+onready var image: AnimatedSprite = $Sprite
+onready var health_bar: Node2D = $HealthBar
+
+var health := MAX_HP
 
 var left_exhaust_init_pos = Vector2();
 var right_exhaust_init_pos = Vector2();
@@ -81,3 +86,5 @@ func run_step(inputs: InputState, delta: float) -> void:
 
     if inputs.is_pressed(InputType.FIRE):
         emit_signal("fire", position, FIRE_VECTOR * FIRE_SPEED)
+    health -= 5 * delta
+    health_bar.set_fraction(health / MAX_HP)

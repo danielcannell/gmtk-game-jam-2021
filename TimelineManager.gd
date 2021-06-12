@@ -6,15 +6,16 @@ const Ship = preload("res://Ships/Ship.tscn")
 onready var bullet_manager = $"../BulletManager"
 
 
+onready var timelines = Globals.timelines
+
+
 var live_timeline: int = 0
-var timelines: Array = []
 var ships: Array = []
 var frame_num: int = 0
 
 
 func _ready() -> void:
-    # TODO create new timeline if needed (always do this for now)
-    timelines.append(Timeline.new())
+    live_timeline = Globals.live_timeline
 
     _create_ships()
 
@@ -32,15 +33,10 @@ func _create_ships() -> void:
 
 func _physics_process(delta: float) -> void:
     # Test code for now:
-    # Reset to time 0 and create a new timeline
     if Input.is_action_just_pressed("timeline"):
-        frame_num = 0
-        for ship in ships:
-            remove_child(ship)
-            ship.queue_free()
-        timelines.append(Timeline.new())
-        live_timeline = len(timelines) - 1
-        _create_ships()
+        # TODO: Do we need to free all the ships, or do they get cleaned up?
+        get_tree().change_scene("res://TimelineSelector.tscn")
+        return
 
     # Get inputs and append to 'live' timeline if changed
     timelines[live_timeline].set_state(frame_num, InputManager.get_state())
