@@ -34,7 +34,7 @@ func _physics_process(delta: float) -> void:
         return
 
     if fire_cooldown == 0:
-        emit_signal("fire", position, FIRE_VECTOR * FIRE_SPEED, false)
+        emit_signal("fire", global_position, FIRE_VECTOR * FIRE_SPEED, false)
         fire_cooldown = FIRE_COOLDOWN
 
     if fire_cooldown > 0:
