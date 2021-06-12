@@ -149,7 +149,6 @@ texture = SubResource( 6 )
 [node name="EnemyManager" parent="." instance=ExtResource( 3 )]
 
 [node name="BulletManager" parent="." instance=ExtResource( 4 )]
-position = Vector2( 20.1582, 0 )
 frames = [ ExtResource( 5 ) ]
 
 [node name="TimelineManager" type="Node" parent="."]
