@@ -2,6 +2,7 @@ extends Node2D
 
 
 onready var cone = $Cone
+onready var smoke = $Smoke
 onready var scaler = $Scaler
 
 # Declare member variables here. Examples:
