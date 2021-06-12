@@ -36,10 +36,12 @@ enum Frames {
 func _ready():
     left_exhaust_init_pos = left_exhuast.position;
     right_exhaust_init_pos = right_exhuast.position;
+    right_exhuast.set_mod(10)
     var screen_size = get_viewport_rect().size
 
     position.x = screen_size.x / 2
     position.y = screen_size.y - 100
+
 
 
 func run_step(inputs: InputState, delta: float) -> void:
@@ -58,14 +60,20 @@ func run_step(inputs: InputState, delta: float) -> void:
         image.set_frame(Frames.FLAT)
         left_exhuast.position = left_exhaust_init_pos
         right_exhuast.position = right_exhaust_init_pos
+        left_exhuast.set_trail_bend(0)
+        right_exhuast.set_trail_bend(0)
     elif velocity.x < 0:
         image.set_frame(Frames.LEFT)
         left_exhuast.position = left_exhaust_init_pos - exhaust_turn_ofs
         right_exhuast.position = right_exhaust_init_pos - exhaust_turn_ofs
+        left_exhuast.set_trail_bend(-200)
+        right_exhuast.set_trail_bend(-200)
     else:
         image.set_frame(Frames.RIGHT)
         left_exhuast.position = left_exhaust_init_pos + exhaust_turn_ofs
         right_exhuast.position = right_exhaust_init_pos + exhaust_turn_ofs
+        left_exhuast.set_trail_bend(200)
+        right_exhuast.set_trail_bend(200)
 
     if velocity.y == 0:
         left_exhuast.set_thrust(1.1)
