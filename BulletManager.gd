@@ -32,12 +32,12 @@ func _physics_process(delta: float) -> void:
 
         var bullet = bullets[i] as Bullet
 
-        # if (
-        #     !bounding_box.has_point(bullet.position) or
-        #     bullet.lifetime >= max_lifetime
-        # ):
-        #     bullets_queued_for_destruction.append(bullet)
-        #     continue
+        if (
+            !bounding_box.has_point(bullet.position) or
+            bullet.lifetime >= max_lifetime
+        ):
+            bullets_queued_for_destruction.append(bullet)
+            continue
 
         # Move the bullet and the collision
         bullet.position += bullet.velocity * delta
