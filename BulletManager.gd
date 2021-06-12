@@ -5,9 +5,6 @@ export (Array, Image) var frames
 export (float) var image_change_offset = 0.2
 export (float) var max_lifetime = 10.0
 
-# origin of the bullet manager
-onready var origin = $Origin;
-
 # the areas in which bullets operate
 onready var shared_area = $SharedArea;
 
@@ -115,6 +112,7 @@ func _configure_collision_for_bullet(bullet: Bullet) -> void:
 
     # Register the generated id to the bullet
     bullet.shape_id = _circle_shape
+
 
 func get_bullet(id: int) -> Bullet:
     return bullets[id]
