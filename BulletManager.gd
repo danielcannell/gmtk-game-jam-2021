@@ -79,8 +79,6 @@ func set_bounding_box(box: Rect2) -> void:
 
 # Register a new bullet in the array with the optimization logic
 func spawn_bullet(position: Vector2, velocity: Vector2) -> void:
-    print("spawn", position)
-
     var bullet : Bullet = Bullet.new()
     bullet.velocity = velocity
     bullet.position  = position

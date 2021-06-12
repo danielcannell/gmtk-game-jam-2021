@@ -13,6 +13,8 @@ onready var right_exhuast = $RightExhaust;
 onready var image: AnimatedSprite = $Sprite
 onready var health_bar: Node2D = $HealthBar
 
+onready var fire_cooldown := 0
+
 var health := MAX_HP
 
 var left_exhaust_init_pos = Vector2();
@@ -24,7 +26,8 @@ signal fire(position, velocity)
 
 
 const FIRE_VECTOR = Vector2(0, -1)
-const FIRE_SPEED = 20.0;
+const FIRE_SPEED = 20.0
+const FIRE_COOLDOWN = 10
 
 
 enum Frames {
@@ -84,7 +87,12 @@ func run_step(inputs: InputState, delta: float) -> void:
     position.y = clamp(position.y, 0, screen_size.y)
 
 
-    if inputs.is_pressed(InputType.FIRE):
+    if inputs.is_pressed(InputType.FIRE) && fire_cooldown == 0:
         emit_signal("fire", position, FIRE_VECTOR * FIRE_SPEED)
+        fire_cooldown = FIRE_COOLDOWN
+
+    if fire_cooldown > 0:
+        fire_cooldown -= 1
+
     health -= 5 * delta
     health_bar.set_fraction(health / MAX_HP)
