@@ -26,8 +26,8 @@ signal fire(position, velocity)
 
 
 const FIRE_VECTOR = Vector2(0, -1)
-const FIRE_SPEED = 20.0
-const FIRE_COOLDOWN = 10
+const FIRE_SPEED = 400.0
+const FIRE_COOLDOWN = 5
 
 
 enum Frames {
