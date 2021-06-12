@@ -117,7 +117,7 @@ shader = SubResource( 3 )
 shader_param/scroll_speed = 4.0
 shader_param/OCTAVES = 6
 
-[sub_resource type="OpenSimplexNoise" id=7]
+[sub_resource type="OpenSimplexNoise" id=5]
 seed = 11
 octaves = 6
 persistence = 0.397
@@ -126,7 +126,7 @@ persistence = 0.397
 width = 1222
 height = 917
 seamless = true
-noise = SubResource( 7 )
+noise = SubResource( 5 )
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 2 )
@@ -154,5 +154,6 @@ __meta__ = {
 material = SubResource( 4 )
 position = Vector2( 463.663, 358.935 )
 texture = SubResource( 6 )
+
 [node name="TimelineManager" type="Node" parent="."]
 script = ExtResource( 1 )
