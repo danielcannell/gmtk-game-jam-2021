@@ -14,11 +14,35 @@ var bullets : Array = []
 var bounding_box : Rect2
 
 
+func make_snapshot_for_bullet(b: Bullet):
+    return {
+        "velocity": b.velocity,
+        "position": b.position,
+        "lifetime": b.lifetime,
+        "animation_lifetime": b.animation_lifetime,
+        "image_offset": b.image_offset,
+        "dead": b.dead,
+        "damage": b.damage,
+        "is_player": b.is_player,
+    }
+
+
+func restore_snapshot_for_bullet(b: Bullet, snapshot):
+    b.velocity = snapshot["velocity"]
+    b.position = snapshot["position"]
+    b.lifetime = snapshot["lifetime"]
+    b.animation_lifetime = snapshot["animation_lifetime"]
+    b.image_offset = snapshot["image_offset"]
+    b.dead = snapshot["dead"]
+    b.damage = snapshot["damage"]
+    b.is_player = snapshot["is_player"]
+
+
 func make_snapshot():
     var snapshot = []
 
     for b in bullets:
-        snapshot.append(b.make_snapshot())
+        snapshot.append(make_snapshot_for_bullet(b))
 
     return snapshot
 
@@ -26,7 +50,7 @@ func make_snapshot():
 func restore_snapshot(snapshot):
     for b in snapshot:
         spawn_bullet(Vector2(), Vector2(), false)
-        bullets[-1].restore_snaphot(b)
+        restore_snapshot_for_bullet(bullets[-1], b)
 
 
 # ================================ Lifecycle ================================ #
