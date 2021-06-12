@@ -13,6 +13,7 @@ var fire_cooldown := 0
 
 
 signal fire(position, velocity)
+signal death(position)
 
 
 const FIRE_VECTOR = Vector2(0, 1)
@@ -41,6 +42,7 @@ func _physics_process(delta: float) -> void:
         fire_cooldown -= 1
 
     if health <= 0:
+        emit_signal("death", global_position)
         queue_free()
 
 
