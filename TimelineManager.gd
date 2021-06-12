@@ -43,14 +43,19 @@ func _make_snapshot():
         else:
             ships_snapshot.append(null)
 
+    var bullets_snapshot = bullet_manager.make_snapshot()
+
     return {
         "ships": ships_snapshot,
         "frame_num": frame_num,
+        "bullets": bullets_snapshot,
     }
 
 
 func _restore_snapshot(snapshot):
     frame_num = snapshot["frame_num"]
+
+    bullet_manager.restore_snapshot(snapshot["bullets"])
 
     for i in snapshot["ships"].size():
         ships[i].restore_snaphot(snapshot["ships"][i])

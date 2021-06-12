@@ -16,6 +16,15 @@ onready var max_images = frames.size()
 var bullets : Array = []
 var bounding_box : Rect2
 
+
+func make_snapshot():
+    return {}
+
+
+func restore_snapshot(_snapshot):
+    pass
+
+
 # ================================ Lifecycle ================================ #
 
 func _exit_tree() -> void:
