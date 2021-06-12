@@ -54,7 +54,7 @@ func restore_snaphot(snapshot):
             "fire_cooldown": 0,
         }
 
-    health = snapshot["health"]
+    set_health(snapshot["health"])
     position = snapshot["position"]
     fire_cooldown = snapshot["fire_cooldown"]
 
