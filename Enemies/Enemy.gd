@@ -10,6 +10,7 @@ onready var bullet_manager: BulletManager = $"../../../BulletManager"
 
 var health := MAX_HP
 var fire_cooldown := 0
+var path_idx := 0
 
 
 signal fire(position, velocity)
@@ -17,8 +18,8 @@ signal death(position)
 
 
 const FIRE_VECTOR = Vector2(0, 1)
-const FIRE_SPEED = 600.0
-const FIRE_COOLDOWN = 5
+const FIRE_SPEED = 300.0
+const FIRE_COOLDOWN = 35
 
 
 func _ready():
@@ -35,7 +36,9 @@ func _physics_process(delta: float) -> void:
         return
 
     if fire_cooldown == 0:
-        emit_signal("fire", global_position, FIRE_VECTOR * FIRE_SPEED, false)
+        for i in [-20, 0, 20]:
+            var vec = FIRE_VECTOR.rotated(deg2rad(i))
+            emit_signal("fire", global_position, vec * FIRE_SPEED, false)
         fire_cooldown = FIRE_COOLDOWN
 
     if fire_cooldown > 0:

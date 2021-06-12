@@ -18,5 +18,5 @@ func _ready():
 func set_snapshot(ss, idx: int) -> void:
     var player_ship = ss["ships"][idx]
     distance = ss["frame_num"]
-    health = 0 if player_ship == null else player_ship.health
+    health = 0 if !is_instance_valid(player_ship) else player_ship.health
     description = "Num " + str(idx)

@@ -4,6 +4,7 @@ extends Node
 const Ship = preload("res://Ships/Ship.tscn")
 
 onready var bullet_manager = $"../BulletManager"
+onready var enemy_manager = $"../EnemyManager"
 
 
 onready var timelines = Globals.timelines
@@ -45,10 +46,13 @@ func _make_snapshot():
 
     var bullets_snapshot = bullet_manager.make_snapshot()
 
+    var enemies_snapshot = enemy_manager.make_snapshot()
+
     return {
         "ships": ships_snapshot,
         "frame_num": frame_num,
         "bullets": bullets_snapshot,
+        "enemies": enemies_snapshot,
     }
 
 
@@ -58,7 +62,9 @@ func _restore_snapshot(snapshot):
     bullet_manager.restore_snapshot(snapshot["bullets"])
 
     for i in snapshot["ships"].size():
-        ships[i].restore_snaphot(snapshot["ships"][i])
+        ships[i].restore_snapshot(snapshot["ships"][i])
+
+    enemy_manager.restore_snapshot(snapshot["enemies"])
 
 
 func _physics_process(delta: float) -> void:

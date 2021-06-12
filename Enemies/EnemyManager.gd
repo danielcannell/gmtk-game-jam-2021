@@ -1,3 +1,4 @@
+class_name EnemyManager
 extends Node2D
 
 
@@ -8,7 +9,7 @@ const Explosion = preload("res://Effects/Explosion.tscn")
 onready var loop_path = $LoopPath
 onready var across_path = $AcrossPath
 onready var bullet_manager: BulletManager = $"../BulletManager"
-
+onready var paths = [loop_path, across_path]
 
 var enemies = []
 var frame_num = 0
@@ -20,28 +21,57 @@ func on_death(pos):
     effect.run()
 
 
-func spawn_enemy_on_path(path):
+func spawn_enemy_on_path(idx: int):
     var enemy = Enemy.instance()
+    enemy.path_idx = idx
     enemy.connect("fire", bullet_manager, "spawn_bullet")
     enemy.connect("death", self, "on_death")
-    path.add_child(enemy)
+    paths[idx].add_child(enemy)
     enemies.append(enemy)
 
 
 func _physics_process(_delta: float) -> void:
-    # Test code for now:
-    if Input.is_action_just_pressed("timeline"):
-        for enemy in enemies:
-            if is_instance_valid(enemy):
-                enemy.queue_free()
-
-        enemies = []
-
-        frame_num = 0
-
     frame_num += 1
 
     if frame_num % (60 * 4) == 0:
-        spawn_enemy_on_path(across_path)
+        spawn_enemy_on_path(1)
     if frame_num % (60 * 5) == 0:
-        spawn_enemy_on_path(loop_path)
+        spawn_enemy_on_path(0)
+
+
+#### snapshot
+
+
+func make_snapshot_for_enemy(e):
+    return {
+        "offset": e.offset,
+        "health": e.health,
+        "fire_cooldown": e.fire_cooldown,
+        "path_idx": e.path_idx,
+    }
+
+
+func restore_snapshot_for_enemy(e, snapshot):
+    e.offset = snapshot["offset"]
+    e.set_health(snapshot["health"])
+    e.fire_cooldown = snapshot["fire_cooldown"]
+
+
+func make_snapshot():
+    var enemies_snapshot = []
+
+    for e in enemies:
+        if is_instance_valid(e):
+            enemies_snapshot.append(make_snapshot_for_enemy(e))
+
+    return {
+        "enemies": enemies_snapshot,
+        "frame_num": frame_num,
+    }
+
+
+func restore_snapshot(snapshot):
+    frame_num = snapshot["frame_num"]
+    for e in snapshot["enemies"]:
+        spawn_enemy_on_path(e["path_idx"])
+        restore_snapshot_for_enemy(enemies[-1], e)
