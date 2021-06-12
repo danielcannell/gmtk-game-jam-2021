@@ -18,11 +18,18 @@ var bounding_box : Rect2
 
 
 func make_snapshot():
-    return {}
+    var snapshot = []
+
+    for b in bullets:
+        snapshot.append(b.make_snapshot())
+
+    return snapshot
 
 
-func restore_snapshot(_snapshot):
-    pass
+func restore_snapshot(snapshot):
+    for b in snapshot:
+        spawn_bullet(Vector2(), Vector2())
+        bullets[-1].restore_snaphot(b)
 
 
 # ================================ Lifecycle ================================ #
