@@ -4,11 +4,18 @@ extends Node2D
 const Enemy = preload("res://Enemies/Enemy.tscn")
 
 
-onready var path = $Path2D
+onready var loop_path = $LoopPath
+onready var across_path = $AcrossPath
 
 
 var enemies = []
 var frame_num = 0
+
+
+func spawn_enemy_on_path(path):
+    var enemy = Enemy.instance()
+    path.add_child(enemy)
+    enemies.append(enemy)
 
 
 func _physics_process(_delta: float) -> void:
@@ -24,7 +31,7 @@ func _physics_process(_delta: float) -> void:
 
     frame_num += 1
 
-    if frame_num % 120 == 0:
-        var enemy = Enemy.instance()
-        path.add_child(enemy)
-        enemies.append(enemy)
+    if frame_num % (60 * 4) == 0:
+        spawn_enemy_on_path(across_path)
+    if frame_num % (60 * 5) == 0:
+        spawn_enemy_on_path(loop_path)
