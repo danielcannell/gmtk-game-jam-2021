@@ -13,11 +13,21 @@ onready var right_exhuast = $RightExhaust;
 onready var image: AnimatedSprite = $Sprite
 onready var health_bar: Node2D = $HealthBar
 
+
 var health := MAX_HP
+var fire_cooldown := 0
 
 var left_exhaust_init_pos = Vector2();
 var right_exhaust_init_pos = Vector2();
 var exhaust_turn_ofs = Vector2(3, 0);
+
+
+signal fire(position, velocity)
+
+
+const FIRE_VECTOR = Vector2(0, -1)
+const FIRE_SPEED = 20.0
+const FIRE_COOLDOWN = 10
 
 
 enum Frames {
@@ -27,16 +37,26 @@ enum Frames {
 }
 
 
+static func make_default_snapshot():
+    return {
+        "health": 0,
+        "position": Vector2(0, 0),
+        "fire_cooldown": 0,
+    }
+
+
 func make_snapshot():
     return {
         "health": health,
         "position": position,
+        "fire_cooldown": fire_cooldown,
     }
 
 
 func restore_snaphot(snapshot):
     health = snapshot["health"]
     position = snapshot["position"]
+    fire_cooldown = snapshot["fire_cooldown"]
 
     if health <= 0:
         queue_free()
@@ -91,6 +111,13 @@ func run_step(inputs: InputState, delta: float) -> void:
     position += velocity * delta
     position.x = clamp(position.x, 0, screen_size.x)
     position.y = clamp(position.y, 0, screen_size.y)
+
+    if inputs.is_pressed(InputType.FIRE) && fire_cooldown == 0:
+        emit_signal("fire", position, FIRE_VECTOR * FIRE_SPEED)
+        fire_cooldown = FIRE_COOLDOWN
+
+    if fire_cooldown > 0:
+        fire_cooldown -= 1
 
     health -= 5 * delta
     health_bar.set_fraction(health / MAX_HP)

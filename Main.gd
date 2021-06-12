@@ -1,5 +1,5 @@
-extends Node
+extends Node2D
 
 
 func _ready():
-    pass
+    $BulletManager.set_bounding_box(get_viewport_rect().grow(16))

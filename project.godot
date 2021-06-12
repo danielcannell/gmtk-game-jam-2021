@@ -10,6 +10,16 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Reference",
+"class": "Bullet",
+"language": "GDScript",
+"path": "res://Types/Bullet.gd"
+}, {
+"base": "Node2D",
+"class": "BulletManager",
+"language": "GDScript",
+"path": "res://BulletManager.gd"
+}, {
+"base": "Reference",
 "class": "InputManager",
 "language": "GDScript",
 "path": "res://Timeline/InputManager.gd"
@@ -30,6 +40,8 @@ _global_script_classes=[ {
 "path": "res://Timeline/Timeline.gd"
 } ]
 _global_script_class_icons={
+"Bullet": "",
+"BulletManager": "",
 "InputManager": "",
 "InputState": "",
 "InputType": "",

@@ -3,6 +3,8 @@ extends Node
 
 const Ship = preload("res://Ships/Ship.tscn")
 
+onready var bullet_manager = $"../BulletManager"
+
 
 onready var timelines = Globals.timelines
 
@@ -24,8 +26,10 @@ func _ready() -> void:
 func _create_ships() -> void:
     # Spawn in a ship for each timeline
     ships = []
+    # bullet_manager.spawn_bullet(Vector2(), Vector2(1, 0))
     for tl in timelines:
         var ship := Ship.instance()
+        ship.connect("fire", bullet_manager, "spawn_bullet")
         ships.append(ship)
         add_child(ship)
 
@@ -37,7 +41,7 @@ func _make_snapshot():
         if is_instance_valid(s):
             ships_snapshot.append(s.make_snapshot())
         else:
-            ships_snapshot.append({"health": 0, "position": Vector2(0, 0)})
+            ships_snapshot.append(Ship.make_default_snapshot())
 
     return {
         "ships": ships_snapshot,
