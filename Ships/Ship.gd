@@ -7,10 +7,17 @@ const REVERSE_SPEED = 200
 
 const MAX_HP = 100.0
 
+onready var left_exhuast = $LeftExhaust;
+onready var right_exhuast = $RightExhaust;
+
 onready var image: AnimatedSprite = $Sprite
 onready var health_bar: Node2D = $HealthBar
 
 var health := MAX_HP
+
+var left_exhaust_init_pos = Vector2();
+var right_exhaust_init_pos = Vector2();
+var exhaust_turn_ofs = Vector2(3, 0);
 
 enum Frames {
     FLAT = 0,
@@ -19,6 +26,8 @@ enum Frames {
 }
 
 func _ready():
+    left_exhaust_init_pos = left_exhuast.position;
+    right_exhaust_init_pos = right_exhuast.position;
     var screen_size = get_viewport_rect().size
 
     position.x = screen_size.x / 2
@@ -39,10 +48,26 @@ func run_step(inputs: InputState, delta: float) -> void:
 
     if velocity.x == 0:
         image.set_frame(Frames.FLAT)
+        left_exhuast.position = left_exhaust_init_pos
+        right_exhuast.position = right_exhaust_init_pos
     elif velocity.x < 0:
         image.set_frame(Frames.LEFT)
+        left_exhuast.position = left_exhaust_init_pos - exhaust_turn_ofs
+        right_exhuast.position = right_exhaust_init_pos - exhaust_turn_ofs
     else:
         image.set_frame(Frames.RIGHT)
+        left_exhuast.position = left_exhaust_init_pos + exhaust_turn_ofs
+        right_exhuast.position = right_exhaust_init_pos + exhaust_turn_ofs
+
+    if velocity.y == 0:
+        left_exhuast.set_thrust(1.1)
+        right_exhuast.set_thrust(1.1)
+    elif velocity.y > 0:
+        left_exhuast.set_thrust(0.5)
+        right_exhuast.set_thrust(0.5)
+    elif velocity.y < 0:
+        left_exhuast.set_thrust(1.7)
+        right_exhuast.set_thrust(1.7)
 
     var screen_size = get_viewport_rect().size
 
