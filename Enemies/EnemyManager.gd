@@ -6,6 +6,7 @@ const Enemy = preload("res://Enemies/Enemy.tscn")
 
 onready var loop_path = $LoopPath
 onready var across_path = $AcrossPath
+onready var bullet_manager: BulletManager = $"../BulletManager"
 
 
 var enemies = []
@@ -14,6 +15,7 @@ var frame_num = 0
 
 func spawn_enemy_on_path(path):
     var enemy = Enemy.instance()
+    enemy.connect("fire", bullet_manager, "spawn_bullet")
     path.add_child(enemy)
     enemies.append(enemy)
 
