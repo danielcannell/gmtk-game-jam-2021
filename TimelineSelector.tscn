@@ -12,7 +12,8 @@ margin_left = 389.0
 margin_top = 232.0
 margin_right = 690.0
 margin_bottom = 246.0
-text = "Press \"1\" to start a new timeline"
+text = "Press \"n\" to start a new timeline.
+Press  a number to restart an old timeline"
 __meta__ = {
 "_edit_use_anchors_": false
 }

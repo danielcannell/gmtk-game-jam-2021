@@ -32,12 +32,12 @@ func _physics_process(delta: float) -> void:
 
         var bullet = bullets[i] as Bullet
 
-        # if (
-        #     !bounding_box.has_point(bullet.position) or
-        #     bullet.lifetime >= max_lifetime
-        # ):
-        #     bullets_queued_for_destruction.append(bullet)
-        #     continue
+        if (
+            !bounding_box.has_point(bullet.position) or
+            bullet.lifetime >= max_lifetime
+        ):
+            bullets_queued_for_destruction.append(bullet)
+            continue
 
         # Move the bullet and the collision
         bullet.position += bullet.velocity * delta
@@ -79,8 +79,6 @@ func set_bounding_box(box: Rect2) -> void:
 
 # Register a new bullet in the array with the optimization logic
 func spawn_bullet(position: Vector2, velocity: Vector2) -> void:
-    print("spawn", position)
-
     var bullet : Bullet = Bullet.new()
     bullet.velocity = velocity
     bullet.position  = position

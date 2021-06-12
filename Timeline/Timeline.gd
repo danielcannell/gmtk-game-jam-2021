@@ -3,6 +3,9 @@ class_name Timeline
 var _events: Array = []
 var _empty = InputState.new(0)
 
+# Snapshot of the world state at the end of the timeline
+var snapshot = null
+
 func get_state(frame: int) -> InputState:
     var last: InputState = _empty
     for event in _events:

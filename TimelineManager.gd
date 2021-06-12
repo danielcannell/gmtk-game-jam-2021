@@ -19,6 +19,9 @@ func _ready() -> void:
 
     _create_ships()
 
+    if timelines[live_timeline].snapshot != null:
+        _restore_snapshot(timelines[live_timeline].snapshot)
+
 
 func _create_ships() -> void:
     # Spawn in a ship for each timeline
@@ -31,9 +34,33 @@ func _create_ships() -> void:
         add_child(ship)
 
 
+func _make_snapshot():
+    var ships_snapshot = []
+
+    for s in ships:
+        if is_instance_valid(s):
+            ships_snapshot.append(s.make_snapshot())
+        else:
+            ships_snapshot.append(Ship.make_default_snapshot())
+
+    return {
+        "ships": ships_snapshot,
+        "frame_num": frame_num,
+    }
+
+
+func _restore_snapshot(snapshot):
+    frame_num = snapshot["frame_num"]
+
+    for i in snapshot["ships"].size():
+        ships[i].restore_snaphot(snapshot["ships"][i])
+
+
 func _physics_process(delta: float) -> void:
     # Test code for now:
     if Input.is_action_just_pressed("timeline"):
+        timelines[live_timeline].snapshot = _make_snapshot()
+
         # TODO: Do we need to free all the ships, or do they get cleaned up?
         get_tree().change_scene("res://TimelineSelector.tscn")
         return
@@ -44,6 +71,9 @@ func _physics_process(delta: float) -> void:
     for i in range(len(timelines)):
         var tl: Timeline = timelines[i]
         var ship: Node2D = ships[i]
+
+        if !is_instance_valid(ship):
+            continue
 
         # Get current input state for this ship and run tick
         var state = tl.get_state(frame_num)
