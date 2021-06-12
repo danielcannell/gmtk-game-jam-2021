@@ -7,7 +7,7 @@
 [ext_resource path="res://Art/orb.png" type="Texture" id=5]
 [ext_resource path="res://Art/blend-ground.png" type="Texture" id=6]
 
-[sub_resource type="Shader" id=7]
+[sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
 
 uniform float scroll_speed = 0.04;
@@ -19,11 +19,11 @@ void fragment(){
     COLOR = color;
 }"
 
-[sub_resource type="ShaderMaterial" id=8]
-shader = SubResource( 7 )
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
 shader_param/scroll_speed = 0.04
 
-[sub_resource type="Shader" id=9]
+[sub_resource type="Shader" id=3]
 code = "shader_type canvas_item;
 
 uniform float scroll_speed = 4.0;
@@ -112,21 +112,21 @@ void fragment(){
     //COLOR.a = n3;
 }"
 
-[sub_resource type="ShaderMaterial" id=10]
-shader = SubResource( 9 )
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
 shader_param/scroll_speed = 4.0
 shader_param/OCTAVES = 6
 
-[sub_resource type="OpenSimplexNoise" id=11]
+[sub_resource type="OpenSimplexNoise" id=5]
 seed = 11
 octaves = 6
 persistence = 0.397
 
-[sub_resource type="NoiseTexture" id=12]
+[sub_resource type="NoiseTexture" id=6]
 width = 1222
 height = 917
 seamless = true
-noise = SubResource( 11 )
+noise = SubResource( 5 )
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 2 )
@@ -138,7 +138,7 @@ position = Vector2( 20.1582, 0 )
 frames = [ ExtResource( 5 ) ]
 
 [node name="Terrian" type="TextureRect" parent="."]
-material = SubResource( 8 )
+material = SubResource( 2 )
 margin_left = -64.697
 margin_top = 1413.22
 margin_right = 2435.3
@@ -151,8 +151,9 @@ __meta__ = {
 }
 
 [node name="TextureRect" type="Sprite" parent="."]
-material = SubResource( 10 )
+material = SubResource( 4 )
 position = Vector2( 463.663, 358.935 )
-texture = SubResource( 12 )
+texture = SubResource( 6 )
+
 [node name="TimelineManager" type="Node" parent="."]
 script = ExtResource( 1 )
