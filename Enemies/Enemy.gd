@@ -10,6 +10,7 @@ onready var bullet_manager: BulletManager = $"../../../BulletManager"
 
 var health := MAX_HP
 var fire_cooldown := 0
+var path_idx := 0
 
 
 signal fire(position, velocity)

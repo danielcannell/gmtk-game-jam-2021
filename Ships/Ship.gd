@@ -46,7 +46,7 @@ func make_snapshot():
     }
 
 
-func restore_snaphot(snapshot):
+func restore_snapshot(snapshot):
     if snapshot == null:
         snapshot = {
             "health": 0,
