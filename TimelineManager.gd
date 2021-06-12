@@ -21,6 +21,7 @@ func _ready() -> void:
 
     if timelines[live_timeline].snapshot != null:
         _restore_snapshot(timelines[live_timeline].snapshot)
+        timelines[live_timeline].snapshot = null
 
 
 func _create_ships() -> void:
@@ -41,7 +42,7 @@ func _make_snapshot():
         if is_instance_valid(s):
             ships_snapshot.append(s.make_snapshot())
         else:
-            ships_snapshot.append(Ship.make_default_snapshot())
+            ships_snapshot.append(null)
 
     return {
         "ships": ships_snapshot,
@@ -74,6 +75,11 @@ func _physics_process(delta: float) -> void:
 
         if !is_instance_valid(ship):
             continue
+
+        # De-spawn ships when they reach the end of their timeline
+        if tl.snapshot != null:
+            if frame_num > tl.snapshot["frame_num"]:
+                ship.queue_free()
 
         # Get current input state for this ship and run tick
         var state = tl.get_state(frame_num)

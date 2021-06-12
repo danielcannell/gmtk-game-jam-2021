@@ -37,14 +37,6 @@ enum Frames {
 }
 
 
-static func make_default_snapshot():
-    return {
-        "health": 0,
-        "position": Vector2(0, 0),
-        "fire_cooldown": 0,
-    }
-
-
 func make_snapshot():
     return {
         "health": health,
@@ -54,6 +46,13 @@ func make_snapshot():
 
 
 func restore_snaphot(snapshot):
+    if snapshot == null:
+        snapshot = {
+            "health": 0,
+            "position": Vector2(0, 0),
+            "fire_cooldown": 0,
+        }
+
     health = snapshot["health"]
     position = snapshot["position"]
     fire_cooldown = snapshot["fire_cooldown"]
