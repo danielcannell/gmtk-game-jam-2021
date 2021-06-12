@@ -24,8 +24,7 @@ func _physics_process(delta: float) -> void:
         queue_free()
 
 
-func _on_area_shape_entered(area_id: int, _area: Area2D, area_shape: int, _local_shape: int) -> void:
-    print(area_id, " - ", area_shape)
+func _on_area_shape_entered(_area_id: int, _area: Area2D, area_shape: int, _local_shape: int) -> void:
     var bullet = bullet_manager.get_bullet(area_shape)
     bullet.dead = true
     set_health(health - bullet.damage)
