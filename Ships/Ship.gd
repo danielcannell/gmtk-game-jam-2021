@@ -19,11 +19,28 @@ var left_exhaust_init_pos = Vector2();
 var right_exhaust_init_pos = Vector2();
 var exhaust_turn_ofs = Vector2(3, 0);
 
+
 enum Frames {
     FLAT = 0,
     LEFT = 1,
     RIGHT = 2,
 }
+
+
+func make_snapshot():
+    return {
+        "health": health,
+        "position": position,
+    }
+
+
+func restore_snaphot(snapshot):
+    health = snapshot["health"]
+    position = snapshot["position"]
+
+    if health <= 0:
+        queue_free()
+
 
 func _ready():
     left_exhaust_init_pos = left_exhuast.position;
@@ -77,3 +94,5 @@ func run_step(inputs: InputState, delta: float) -> void:
 
     health -= 5 * delta
     health_bar.set_fraction(health / MAX_HP)
+    if health <= 0:
+        queue_free()
