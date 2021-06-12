@@ -73,9 +73,14 @@ func _draw() -> void:
             bullet.animation_lifetime = 0.0
             if bullet.image_offset >= max_images:
                 bullet.image_offset = 0
+
+        var color = Globals.enemy_bullet_color
+        if bullet.is_player:
+            color = Globals.player_bullet_color
         draw_texture(
             frames[bullet.image_offset],
-            bullet.position - offset
+            bullet.position - offset,
+            color
         )
 
 # ================================= Public ================================== #
@@ -85,10 +90,11 @@ func set_bounding_box(box: Rect2) -> void:
     bounding_box = box
 
 # Register a new bullet in the array with the optimization logic
-func spawn_bullet(position: Vector2, velocity: Vector2) -> void:
+func spawn_bullet(position: Vector2, velocity: Vector2, is_player: bool) -> void:
     var bullet : Bullet = Bullet.new()
     bullet.velocity = velocity
     bullet.position  = position
+    bullet.is_player = is_player
 
     _configure_collision_for_bullet(bullet)
 

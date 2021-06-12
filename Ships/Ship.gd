@@ -120,7 +120,7 @@ func run_step(inputs: InputState, delta: float) -> void:
     position.y = clamp(position.y, 0, screen_size.y)
 
     if inputs.is_pressed(InputType.FIRE) && fire_cooldown == 0:
-        emit_signal("fire", position, FIRE_VECTOR * FIRE_SPEED)
+        emit_signal("fire", position, FIRE_VECTOR * FIRE_SPEED, true)
         fire_cooldown = FIRE_COOLDOWN
 
     if fire_cooldown > 0:
