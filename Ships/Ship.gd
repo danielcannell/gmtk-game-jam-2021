@@ -5,8 +5,12 @@ const HORIZONTAL_SPEED = 300
 const FORWARD_SPEED = 200
 const REVERSE_SPEED = 200
 
-onready var image: AnimatedSprite= $Sprite;
+const MAX_HP = 100.0
 
+onready var image: AnimatedSprite = $Sprite
+onready var health_bar: Node2D = $HealthBar
+
+var health := MAX_HP
 
 enum Frames {
     FLAT = 0,
@@ -45,3 +49,6 @@ func run_step(inputs: InputState, delta: float) -> void:
     position += velocity * delta
     position.x = clamp(position.x, 0, screen_size.x)
     position.y = clamp(position.y, 0, screen_size.y)
+
+    health -= 5 * delta
+    health_bar.set_fraction(health / MAX_HP)
