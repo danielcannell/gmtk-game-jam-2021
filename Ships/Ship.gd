@@ -55,8 +55,8 @@ var health := MAX_HP
 var fire_cooldown := 0
 var dead := false
 
-var left_exhaust_init_pos = Vector2()
-var right_exhaust_init_pos = Vector2()
+var left_exhaust_init_pos := Vector2()
+var right_exhaust_init_pos := Vector2()
 var ship_type: int = ShipType.SHIELD
 
 
@@ -154,6 +154,10 @@ func _update_ship(velocity: Vector2) -> void:
         right_exhuast.set_thrust(1.8)
 
 
+func handle_fire(fire_pressed: bool):
+    if fire_pressed && fire_cooldown == 0:
+        emit_signal("fire", position, FIRE_VECTOR * FIRE_SPEED, true)
+        fire_cooldown = FIRE_COOLDOWN
 
 
 func run_step(inputs: InputState, delta: float) -> void:
@@ -176,9 +180,7 @@ func run_step(inputs: InputState, delta: float) -> void:
     position.x = clamp(position.x, 0, screen_size.x)
     position.y = clamp(position.y, 0, screen_size.y)
 
-    if inputs.is_pressed(InputType.FIRE) && fire_cooldown == 0:
-        emit_signal("fire", position, FIRE_VECTOR * FIRE_SPEED, true)
-        fire_cooldown = FIRE_COOLDOWN
+    handle_fire(inputs.is_pressed(InputType.FIRE))
 
     if fire_cooldown > 0:
         fire_cooldown -= 1
