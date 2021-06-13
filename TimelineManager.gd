@@ -8,6 +8,7 @@ const SavedEffect = preload("res://Effects/ShipSaved.tscn")
 onready var bullet_manager = $"../BulletManager"
 onready var enemy_manager = $"../EnemyManager"
 
+signal display_message(text)
 
 onready var timelines = Globals.timelines
 
@@ -124,6 +125,7 @@ func _physics_process(delta: float) -> void:
         var end_of_timeline: bool = tl.snapshot != null && frame_num > tl.snapshot["frame_num"];
 
         if end_of_timeline:
+            emit_signal("display_message", "Timeline Changed!")
             saved_effect(ship)
 
         # De-spawn ships when they die or reach the end of their timeline
