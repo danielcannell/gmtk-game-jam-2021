@@ -65,7 +65,7 @@ const CONFIG = {
         },
         "exhaust_turn_ofs": Vector2(3, 0),
         "exhaust_turn_y_ofs": -5,
-        "fire_cooldown": 50,
+        "fire_cooldown": 10,
     }
 }
 
