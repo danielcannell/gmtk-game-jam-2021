@@ -15,6 +15,8 @@ onready var max_energy_images = energy_frames.size()
 var bullets : Array = []
 var bounding_box : Rect2
 
+var energy_bullet_mod = Color(1.1, 1.5, 1.2, 1.0)
+
 
 func make_snapshot_for_bullet(b: Bullet):
     return {
@@ -120,7 +122,7 @@ func _draw() -> void:
                 bullet.animation_lifetime = 0.0
             draw_texture(
                     energy_frames[bullet.image_offset],
-                    bullet.position - energy_offset)
+                    bullet.position - energy_offset, energy_bullet_mod)
 
 # ================================= Public ================================== #
 
