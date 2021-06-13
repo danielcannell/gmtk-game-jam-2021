@@ -38,7 +38,7 @@ func on_boss_death(pos: Vector2):
     var effect = Explosion.instance()
     add_child(effect)
     effect.position = pos
-    effect.scale = Vector2(3, 3)
+    effect.scale = Vector2(1.5, 1.5)
     emit_signal("display_message", "YOU WON!!!")
     effect.run()
 
