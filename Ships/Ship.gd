@@ -8,6 +8,7 @@ const REVERSE_SPEED = 300
 
 const SHIELD_DRAIN_RATE = 1
 const SHIELD_RECHARGE_RATE = 2
+const SHIELD_ACTIVATION_COST = 50
 const MAX_SHIELD = 300
 
 const MAX_HP = 100.0
@@ -194,7 +195,11 @@ func handle_fire(fire_pressed: bool):
 
         ShipType.SHIELD:
             if fire_pressed:
-                fire_cooldown -= SHIELD_DRAIN_RATE
+                if shield.is_on():
+                    fire_cooldown -= SHIELD_DRAIN_RATE
+                else:
+                    fire_cooldown -= SHIELD_ACTIVATION_COST
+
                 if fire_cooldown < 0:
                     fire_cooldown = 0
             else:
