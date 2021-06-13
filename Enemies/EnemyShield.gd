@@ -50,7 +50,6 @@ func set_energy(e: int) -> void:
 
 
 func shield_damage_effect() -> void:
-    print("shield_damage_effect")
     if not tween.is_active():
         var s= Color(1,1,1,1)
         var e= Color(5.0,1.5,1.5,1.5)
