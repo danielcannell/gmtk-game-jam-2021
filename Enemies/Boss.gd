@@ -1,8 +1,8 @@
 extends PathFollow2D
 
 
-const SPEED = 200
-const MAX_HP = 100.0
+const SPEED = 50
+const MAX_HP = 2000.0
 
 onready var health_bar: Node2D = $HealthBar
 onready var area: Area2D = $Area2D
