@@ -3,6 +3,7 @@ extends Node2D
 onready var label = $Label
 onready var tween = $Tween
 onready var timeline_manager = $TimelineManager
+onready var enemy_manager = $EnemyManager
 
 
 func show_message(text: String):
@@ -21,3 +22,4 @@ func show_message(text: String):
 func _ready():
     $BulletManager.set_bounding_box(get_viewport_rect().grow(16))
     timeline_manager.connect("display_message", self, "show_message")
+    enemy_manager.connect("display_message", self, "show_message")

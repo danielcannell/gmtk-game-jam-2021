@@ -20,7 +20,7 @@ var enemy_type: int = Globals.EnemyType.BOSS
 
 signal fire(position, velocity)
 signal death(position)
-
+signal message(text)
 
 const FIRE_VECTOR := Vector2(0, 1)
 const FIRE_SPEED := 300.0

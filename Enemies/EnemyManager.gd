@@ -6,6 +6,7 @@ const Enemy = preload("res://Enemies/Enemy.tscn")
 const Boss = preload("res://Enemies/Boss.tscn")
 const Explosion = preload("res://Effects/Explosion.tscn")
 
+signal display_message
 
 onready var bullet_manager: BulletManager = $"../BulletManager"
 
@@ -33,18 +34,27 @@ func on_death(pos: Vector2):
     effect.position = pos
     effect.run()
 
+func on_boss_death(pos: Vector2):
+    var effect = Explosion.instance()
+    add_child(effect)
+    effect.position = pos
+    effect.scale = Vector2(3, 3)
+    emit_signal("display_message", "YOU WON!!!")
+    effect.run()
+
 
 func spawn_enemy_on_path(idx: String, enemy_type: int):
     var enemy
     match enemy_type:
         Globals.EnemyType.BASIC:
             enemy = Enemy.instance()
+            enemy.connect("death", self, "on_death")
         Globals.EnemyType.BOSS:
             enemy = Boss.instance()
+            enemy.connect("death", self, "on_boss_death")
 
     enemy.path_idx = idx
     enemy.connect("fire", bullet_manager, "spawn_bullet")
-    enemy.connect("death", self, "on_death")
     paths[idx].add_child(enemy)
     enemies.append(enemy)
 
