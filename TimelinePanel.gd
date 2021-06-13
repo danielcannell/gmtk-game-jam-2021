@@ -1,4 +1,4 @@
-extends PanelContainer
+extends Button
 
 var description: String = ""
 var distance: int = 0

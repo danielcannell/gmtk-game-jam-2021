@@ -17,7 +17,7 @@ func _ready():
         hbox.add_child(p)
 
 
-func _input(evt):
+func _unhandled_key_input(evt):
     if evt is InputEventKey and evt.pressed and !evt.echo:
         if evt.scancode == KEY_N:
             timelines.append(Timeline.new())

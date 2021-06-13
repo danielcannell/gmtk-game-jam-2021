@@ -2,34 +2,42 @@
 
 [ext_resource path="res://TimelinePanel.gd" type="Script" id=1]
 
-[node name="PanelContainer" type="PanelContainer"]
-margin_right = 88.0
-margin_bottom = 600.0
+[node name="TimelinePanel" type="Button"]
+margin_right = 150.0
+margin_bottom = 150.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 81.0
-margin_bottom = 593.0
+margin_right = -7.0
+margin_bottom = -7.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Name" type="Label" parent="VBoxContainer"]
-margin_right = 74.0
+margin_right = 136.0
 margin_bottom = 14.0
 text = "Description"
+align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Dist" type="Label" parent="VBoxContainer"]
 margin_top = 18.0
-margin_right = 74.0
+margin_right = 136.0
 margin_bottom = 32.0
 text = "Distance"
 __meta__ = {
@@ -38,18 +46,9 @@ __meta__ = {
 
 [node name="Health" type="Label" parent="VBoxContainer"]
 margin_top = 36.0
-margin_right = 74.0
+margin_right = 136.0
 margin_bottom = 50.0
 text = "Health"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Button" type="Button" parent="VBoxContainer"]
-margin_top = 54.0
-margin_right = 74.0
-margin_bottom = 74.0
-text = "Go!"
 __meta__ = {
 "_edit_use_anchors_": false
 }
