@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Art/boss.png" type="Texture" id=1]
 [ext_resource path="res://Enemies/Boss.gd" type="Script" id=2]
@@ -7,10 +7,35 @@
 [ext_resource path="res://Enemies/EnemyShield.gd" type="Script" id=5]
 [ext_resource path="res://Art/shield.png" type="Texture" id=6]
 
-[sub_resource type="CircleShape2D" id=1]
+[sub_resource type="CircleShape2D" id=4]
 radius = 115.394
 
-[sub_resource type="CircleShape2D" id=2]
+[sub_resource type="Gradient" id=5]
+offsets = PoolRealArray( 0, 0.5, 0.764706 )
+colors = PoolColorArray( 0, 0.964706, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.576471 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 5 )
+
+[sub_resource type="ParticlesMaterial" id=6]
+emission_shape = 2
+emission_box_extents = Vector3( 180, 10, 1 )
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 100.0
+initial_velocity_random = 0.5
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+tangential_accel = 71.27
+tangential_accel_random = 0.61
+damping = 60.0
+damping_random = 0.4
+scale = 4.0
+scale_random = 0.5
+color_ramp = SubResource( 3 )
+
+[sub_resource type="CircleShape2D" id=7]
 radius = 174.089
 
 [node name="PathFollow2D" type="PathFollow2D"]
@@ -34,16 +59,25 @@ texture = ExtResource( 4 )
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 1 )
+shape = SubResource( 4 )
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="ShieldParticles" type="Particles2D" parent="."]
+position = Vector2( 0, 142 )
+emitting = false
+amount = 160
+lifetime = 0.6
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource( 6 )
 
 [node name="EnemyShield" type="Area2D" parent="."]
 collision_mask = 4
 script = ExtResource( 5 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyShield"]
-shape = SubResource( 2 )
+shape = SubResource( 7 )
 
 [node name="Sprite" type="Sprite" parent="EnemyShield"]
 position = Vector2( 0, 20 )

@@ -9,6 +9,8 @@ const DAMAGE_RATE := 100
 onready var bullet_manager: BulletManager = $"/root/Main/BulletManager"
 onready var tween: Tween = $Tween
 onready var image = $Sprite
+onready var p1 = $"../ShieldParticles"
+
 
 var energy := 0
 
@@ -20,6 +22,7 @@ func _ready():
 func run_tick() -> void:
     if visible:
         if energy == 0:
+            p1.emitting = true
             visible = false
         else:
             energy += RECHARGE_RATE
