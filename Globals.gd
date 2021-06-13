@@ -43,7 +43,7 @@ const WAVES = [
         "type": EnemyType.BASIC,
     },
     {
-        "start": 55 * 60,
+        "start": 65 * 60,
         "paths": ["boss"],
         "count": 1,
         "interval": 1,
