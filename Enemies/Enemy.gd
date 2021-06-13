@@ -12,7 +12,7 @@ onready var tween = $Tween
 
 var health := MAX_HP
 var fire_cooldown := 0
-var path_idx := 0
+var path_idx := ""
 
 
 signal fire(position, velocity)
