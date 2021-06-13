@@ -4,6 +4,7 @@ extends Area2D
 onready var bullet_manager: BulletManager = $"/root/Main/BulletManager"
 onready var tween: Tween = $Tween
 onready var image = $Sprite
+onready var p1 = $"../ShieldParticles"
 
 
 func _ready():
@@ -21,6 +22,10 @@ func _on_area_shape_entered(_area_id: int, _area: Area2D, area_shape: int, _loca
 func set_state(on: bool) -> void:
     if visible != on:
         visible = on
+
+
+func pop():
+    p1.emitting = true
 
 
 func is_on() -> bool:

@@ -212,6 +212,8 @@ func handle_fire(fire_pressed: bool):
                 if fire_cooldown > MAX_SHIELD:
                     fire_cooldown = MAX_SHIELD
 
+            if shield.is_on() and fire_cooldown == 0:
+                shield.pop()
             shield_energy.set_fraction(float(fire_cooldown) / float(MAX_SHIELD))
             shield.set_state(fire_pressed and fire_cooldown > 0)
 
