@@ -39,6 +39,8 @@ func _draw():
     for i in len(Globals.timelines):
         var tl: Timeline = Globals.timelines[i]
         var ss = tl.snapshot
+        if ss == null:
+            continue
         var player_ship = ss["ships"][i]
         var dead: bool = player_ship == null || player_ship["dead"]
 

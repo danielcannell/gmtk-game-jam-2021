@@ -9,6 +9,7 @@ onready var area: Area2D = $Area2D
 onready var sprite = $Sprite
 onready var bullet_manager: BulletManager = $"../../../BulletManager"
 onready var tween = $Tween
+onready var enemy_shield = $EnemyShield
 
 var health := MAX_HP
 var fire_cooldown := 0
@@ -52,10 +53,13 @@ func run_tick(delta: float, _frame_num: int) -> void:
         emit_signal("death", global_position)
         dead = true
 
+    enemy_shield.run_tick()
+
 
 func _on_area_shape_entered(_area_id: int, _area: Area2D, area_shape: int, _local_shape: int) -> void:
     var bullet = bullet_manager.get_bullet(area_shape)
-    if bullet.is_player:
+
+    if bullet.is_player and bullet.type == Bullet.BulletType.NORMAL:
         bullet.dead = true
         set_health(health - bullet.damage)
         damage_effect()

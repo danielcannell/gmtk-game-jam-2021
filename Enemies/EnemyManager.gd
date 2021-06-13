@@ -60,6 +60,8 @@ func advance_waves(frame_num: int):
             var path = Globals.WAVES[wave_idx]["paths"][path_idx % len(Globals.WAVES[wave_idx]["paths"])]
             var type = Globals.WAVES[wave_idx]["type"]
             spawn_enemy_on_path(path, type)
+            if spawn_count % 3 == 0:
+                enemies[-1].enemy_shield.set_state(true)
             spawn_timer = Globals.WAVES[wave_idx]["interval"]
             spawn_count -= 1
             path_idx += 1
@@ -100,6 +102,7 @@ func make_snapshot_for_enemy(e):
         "path_idx": e.path_idx,
         "dead": e.dead,
         "type": e.enemy_type,
+        "shield_energy": e.enemy_shield.energy,
     }
 
 
@@ -108,6 +111,7 @@ func restore_snapshot_for_enemy(e, snapshot):
     e.set_health(snapshot["health"])
     e.fire_cooldown = snapshot["fire_cooldown"]
     e.dead = snapshot["dead"]
+    e.enemy_shield.set_energy(snapshot["shield_energy"])
 
 
 func make_snapshot():
