@@ -90,6 +90,8 @@ position = Vector2( 0.199032, -44.6886 )
 rotation = 1.5708
 shape = SubResource( 3 )
 
+[node name="Tween" type="Tween" parent="Shield"]
+
 [node name="Tween" type="Tween" parent="."]
 
 [node name="Lbls" type="Node2D" parent="."]
