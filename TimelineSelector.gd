@@ -41,10 +41,7 @@ func _ready():
 
 func on_delete_timeline(idx: int) -> void:
     timelines[idx] = Timeline.new()
-
-    var tl = timelines[idx] as Timeline
-    var ss = tl.snapshot
-    panels[idx].set_snapshot(ss, idx)
+    panels[idx].set_snapshot(null, idx)
 
 
 func start_timeline(idx: int) -> void:
