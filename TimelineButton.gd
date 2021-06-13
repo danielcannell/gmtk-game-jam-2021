@@ -39,6 +39,7 @@ func set_snapshot(ss, idx: int) -> void:
     if ss == null:
         # Not played yet
         played = false
+        disabled = false
     else:
         var player_ship = ss["ships"][idx]
         var dead: bool = player_ship == null || player_ship["dead"]
