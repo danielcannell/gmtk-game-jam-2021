@@ -23,6 +23,10 @@ func set_state(on: bool) -> void:
         visible = on
 
 
+func is_on() -> bool:
+    return visible
+
+
 func damage_effect() -> void:
     if not tween.is_active():
         var s= Color(1,1,1,1)

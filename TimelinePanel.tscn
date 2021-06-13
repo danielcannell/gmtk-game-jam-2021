@@ -78,6 +78,7 @@ margin_bottom = 72.0
 margin_top = 76.0
 margin_right = 136.0
 margin_bottom = 172.0
+mouse_filter = 2
 size_flags_vertical = 3
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/CenterContainer"]
@@ -85,6 +86,7 @@ margin_left = 68.0
 margin_top = 48.0
 margin_right = 68.0
 margin_bottom = 48.0
+mouse_filter = 2
 
 [node name="Help" type="Label" parent="VBoxContainer"]
 margin_top = 176.0

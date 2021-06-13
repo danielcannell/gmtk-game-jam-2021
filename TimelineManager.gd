@@ -16,6 +16,7 @@ onready var timelines = Globals.timelines
 var live_timeline: int = 0
 var ships: Array = []
 var frame_num: int = 0
+var quit_timer := 0
 
 
 func _on_player_death(position):
@@ -128,6 +129,10 @@ func _physics_process(delta: float) -> void:
 
         # De-spawn ships when they die or reach the end of their timeline
         if ship.dead || end_of_timeline:
+            # If the live ship dies, start a timer to return to the timeline selector
+            if i == live_timeline:
+                quit_timer = 120
+
             print("saving ", i)
             tl.snapshot = _make_snapshot()
             _remove_ship(i)
@@ -141,6 +146,11 @@ func _physics_process(delta: float) -> void:
     bullet_manager.run_tick(delta, frame_num)
 
     frame_num += 1
+
+    if quit_timer > 0:
+        quit_timer -= 1
+        if quit_timer == 0:
+            get_tree().change_scene("res://TimelineSelector.tscn")
 
 
 func saved_effect(ship):
