@@ -3,6 +3,7 @@ extends Node2D
 
 
 const Enemy = preload("res://Enemies/Enemy.tscn")
+const Boss = preload("res://Enemies/Boss.tscn")
 const Explosion = preload("res://Effects/Explosion.tscn")
 
 
@@ -14,6 +15,7 @@ onready var paths = {
     "left_to_right": $LeftToRightPath,
     "left_to_right_diagonal": $LeftToRightDiagonalPath,
     "right_to_left_diagonal": $RightToLeftDiagonalPath,
+    "boss": $BossPath,
 }
 
 
@@ -32,8 +34,14 @@ func on_death(pos: Vector2):
     effect.run()
 
 
-func spawn_enemy_on_path(idx: String):
-    var enemy = Enemy.instance()
+func spawn_enemy_on_path(idx: String, enemy_type: int):
+    var enemy
+    match enemy_type:
+        Globals.EnemyType.BASIC:
+            enemy = Enemy.instance()
+        Globals.EnemyType.BOSS:
+            enemy = Boss.instance()
+
     enemy.path_idx = idx
     enemy.connect("fire", bullet_manager, "spawn_bullet")
     enemy.connect("death", self, "on_death")
@@ -49,7 +57,9 @@ func advance_waves(frame_num: int):
 
     if wave_active:
         if spawn_timer == 0:
-            spawn_enemy_on_path(Globals.WAVES[wave_idx]["paths"][path_idx % len(Globals.WAVES[wave_idx]["paths"])])
+            var path = Globals.WAVES[wave_idx]["paths"][path_idx % len(Globals.WAVES[wave_idx]["paths"])]
+            var type = Globals.WAVES[wave_idx]["type"]
+            spawn_enemy_on_path(path, type)
             spawn_timer = Globals.WAVES[wave_idx]["interval"]
             spawn_count -= 1
             path_idx += 1
@@ -89,6 +99,7 @@ func make_snapshot_for_enemy(e):
         "fire_cooldown": e.fire_cooldown,
         "path_idx": e.path_idx,
         "dead": e.dead,
+        "type": e.enemy_type,
     }
 
 
@@ -124,5 +135,5 @@ func restore_snapshot(snapshot):
     path_idx = snapshot["path_idx"]
 
     for e in snapshot["enemies"]:
-        spawn_enemy_on_path(e["path_idx"])
+        spawn_enemy_on_path(e["path_idx"], e["type"])
         restore_snapshot_for_enemy(enemies[-1], e)

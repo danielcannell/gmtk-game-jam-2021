@@ -14,6 +14,7 @@ var health := MAX_HP
 var fire_cooldown := 0
 var path_idx := ""
 var dead := false
+var enemy_type: int = Globals.EnemyType.BASIC
 
 
 signal fire(position, velocity)
