@@ -24,7 +24,7 @@ signal death(position)
 
 const FIRE_VECTOR = Vector2(0, 1)
 const FIRE_SPEED = 300.0
-const FIRE_COOLDOWN = 35
+const FIRE_COOLDOWN = 70
 
 
 func _ready():

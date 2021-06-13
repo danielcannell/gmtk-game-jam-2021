@@ -5,6 +5,7 @@ const Panel = preload("res://TimelinePanel.tscn")
 
 
 onready var timelines = Globals.timelines
+onready var timeline_view = $CanvasLayer/Timeline
 onready var hbox = $CanvasLayer/MarginContainer/HBoxContainer
 onready var margins = $CanvasLayer/MarginContainer
 
@@ -44,6 +45,7 @@ func on_delete_timeline(idx: int) -> void:
     timelines[idx] = Timeline.new()
     panels[idx].set_snapshot(null, idx)
     panels[idx].post_init()
+    timeline_view.update()
 
 
 func start_timeline(idx: int) -> void:
