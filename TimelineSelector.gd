@@ -1,7 +1,7 @@
 extends Node
 
 
-const Panel = preload("res://TimelineButton.tscn")
+const Panel = preload("res://TimelinePanel.tscn")
 
 
 onready var timelines = Globals.timelines
@@ -32,9 +32,10 @@ func _ready():
 
         var p = Panel.instance()
         p.set_snapshot(ss, i)
-        p.connect("pressed", self, "start_timeline", [i])
+        p.connect("start", self, "start_timeline", [i])
         p.connect("delete_timeline", self, "on_delete_timeline", [i])
         hbox.add_child(p)
+        p.post_init()
 
         panels.append(p)
 

@@ -16,7 +16,7 @@ onready var _help = $VBoxContainer/Help
 onready var _image = $VBoxContainer/CenterContainer/TextureRect
 
 
-func _ready():
+func post_init():
     _name.text = title
     _type.text = Ship.ShipType.keys()[type]
     _image.texture = frames[type]

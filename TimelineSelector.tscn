@@ -6,13 +6,13 @@
 [ext_resource path="res://Effects/clouds.tres" type="Material" id=4]
 [ext_resource path="res://Effects/ground-scroll.tres" type="Material" id=5]
 
-[sub_resource type="OpenSimplexNoise" id=5]
+[sub_resource type="OpenSimplexNoise" id=1]
 octaves = 1
 
-[sub_resource type="NoiseTexture" id=6]
+[sub_resource type="NoiseTexture" id=2]
 width = 1222
 height = 917
-noise = SubResource( 5 )
+noise = SubResource( 1 )
 
 [node name="TimelineSelector" type="Node"]
 script = ExtResource( 1 )
@@ -33,7 +33,7 @@ __meta__ = {
 [node name="TextureRect" type="Sprite" parent="."]
 material = ExtResource( 4 )
 position = Vector2( 463.663, 358.538 )
-texture = SubResource( 6 )
+texture = SubResource( 2 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
