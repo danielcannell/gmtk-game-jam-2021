@@ -38,6 +38,16 @@ func _create_ships() -> void:
     # Spawn in a ship for each timeline
     ships = []
     for i in timelines.size():
+        var own_ss = timelines[i].snapshot
+        var live_ss = timelines[live_timeline].snapshot
+
+        # Early cleanup of dead ships, so they don't get snapshots
+        if live_ss != null:
+            if own_ss != null:
+                if own_ss["frame_num"] < live_ss["frame_num"]:
+                    ships.append(null)
+                    continue
+
         var ship := Ship.instance()
         ship.connect("fire", bullet_manager, "spawn_bullet")
         ship.connect("death", self, "_on_player_death")
@@ -82,11 +92,11 @@ func _restore_snapshot(snapshot):
     bullet_manager.restore_snapshot(snapshot["bullets"])
 
     for i in snapshot["ships"].size():
+        if ships[i] == null:
+            if snapshot["ships"][i] != null:
+                print("this should never happen ", i, " ", snapshot["ships"])
+            continue
         ships[i].restore_snapshot(snapshot["ships"][i])
-
-        # Early cleanup of dead ships, so the don't get snapshots
-        if ships[i].dead:
-            _remove_ship(i)
 
     enemy_manager.restore_snapshot(snapshot["enemies"])
 

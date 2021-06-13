@@ -176,6 +176,10 @@ func handle_fire(fire_pressed: bool):
             if fire_pressed && fire_cooldown == 0:
                 emit_signal("fire", position, FIRE_VECTOR * FIRE_SPEED, true, Bullet.BulletType.NORMAL)
                 fire_cooldown = FIRE_COOLDOWN
+
+            if fire_cooldown > 0:
+                fire_cooldown -= 1
+
         ShipType.ENERGY:
             if fire_pressed && fire_cooldown == 0:
                 emit_signal("fire", position, FIRE_VECTOR * FIRE_SPEED, true, Bullet.BulletType.ENERGY)
