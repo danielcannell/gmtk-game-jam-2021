@@ -36,12 +36,13 @@ func _ready() -> void:
 func _create_ships() -> void:
     # Spawn in a ship for each timeline
     ships = []
-    for tl in timelines:
+    for i in timelines.size():
         var ship := Ship.instance()
         ship.connect("fire", bullet_manager, "spawn_bullet")
         ship.connect("death", self, "_on_player_death")
         ships.append(ship)
         add_child(ship)
+        ship.set_label(str(i))
 
 
 func _remove_ship(idx) -> void:

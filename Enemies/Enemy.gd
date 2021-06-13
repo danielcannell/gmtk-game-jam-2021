@@ -66,12 +66,13 @@ func set_health(new_health: float) -> void:
 
 
 func damage_effect() -> void:
-    var s= Color(1,1,1,1)
-    var e= Color(6,6,6,6)
-    tween.interpolate_property(sprite, "modulate",
-            s, e, 0.1)
-    tween.start()
-    yield(tween, "tween_completed")
-    tween.interpolate_property(sprite, "modulate",
-            e, s, 0.05)
-    tween.start()
+    if not tween.is_active():
+        var s= Color(1,1,1,1)
+        var e= Color(6,6,6,6)
+        tween.interpolate_property(sprite, "modulate",
+                s, e, 0.05)
+        tween.start()
+        yield(tween, "tween_completed")
+        tween.interpolate_property(sprite, "modulate",
+                e, s, 0.05)
+        tween.start()

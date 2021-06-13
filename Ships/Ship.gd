@@ -15,6 +15,7 @@ onready var image: AnimatedSprite = $Sprite
 onready var health_bar: Node2D = $HealthBar
 onready var bullet_manager: BulletManager = $"../../BulletManager"
 onready var tween = $Tween
+onready var label = $"Lbls/Label"
 
 
 enum ShipType {
@@ -194,6 +195,10 @@ func set_type(new_type: int) -> void:
 func set_health(new_health: float) -> void:
     health = new_health
     health_bar.set_fraction(health / MAX_HP)
+
+
+func set_label(text: String) -> void:
+    label.text = text
 
 
 func _on_area_shape_entered(_area_id: int, _area: Area2D, area_shape: int, _local_shape: int) -> void:
