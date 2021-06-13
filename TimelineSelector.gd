@@ -9,6 +9,9 @@ onready var hbox = $CanvasLayer/MarginContainer/HBoxContainer
 onready var margins = $CanvasLayer/MarginContainer
 
 
+var panels = []
+
+
 func _ready():
     # First-time init
     while len(timelines) < 3:
@@ -29,8 +32,18 @@ func _ready():
 
         var p = Panel.instance()
         p.set_snapshot(ss, i)
-        p.connect("pressed", self, "start_timeline", [i])
+        p.connect("start", self, "start_timeline", [i])
+        p.connect("delete_timeline", self, "on_delete_timeline", [i])
         hbox.add_child(p)
+        p.post_init()
+
+        panels.append(p)
+
+
+func on_delete_timeline(idx: int) -> void:
+    timelines[idx] = Timeline.new()
+    panels[idx].set_snapshot(null, idx)
+    panels[idx].post_init()
 
 
 func start_timeline(idx: int) -> void:

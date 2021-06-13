@@ -1,48 +1,37 @@
-extends Button
+extends Control
 
-export (Array, Image) var frames
 
-var title: String = ""
-var type: int = 0
-var distance: int = 0
-var health: float = 0.0
-var played: bool = false
+onready var start_button = $VBoxContainer/TimelineButton
+onready var delete_button = $VBoxContainer/Button
 
-onready var _name = $VBoxContainer/Name
-onready var _type = $VBoxContainer/Type
-onready var _dist = $VBoxContainer/Dist
-onready var _health = $VBoxContainer/Health
-onready var _help = $VBoxContainer/Help
-onready var _image = $VBoxContainer/CenterContainer/TextureRect
 
+signal start()
+signal delete_timeline()
+
+
+var snapshot = null
+var idx: int = 0
 
 func _ready():
-    _name.text = title
-    _type.text = Ship.ShipType.keys()[type]
-    _image.texture = frames[type]
-    if played:
-        _dist.text = "Distance: " + str(distance) + "m"
-        _health.text = "Health: " + str(int(health))
-        if health > 0:
-            _help.text = "Saved!\nClick to resume"
-        else:
-            _help.text = "Dead"
-    else:
-        _dist.text = ""
-        _health.text = ""
-        _help.text = "Click to start"
+    start_button.connect("pressed", self, "_on_start_pressed")
+    delete_button.connect("pressed", self, "_on_delete_pressed")
 
 
-func set_snapshot(ss, idx: int) -> void:
-    title = "Ship " + str(idx + 1)
-    type = idx % 3
-    if ss == null:
-        # Not played yet
-        played = false
-    else:
-        var player_ship = ss["ships"][idx]
-        var dead: bool = player_ship == null || player_ship["dead"]
-        distance = ss["frame_num"]
-        health = 0 if dead else player_ship.health
-        disabled = dead
-        played = true
+func post_init():
+    start_button.set_snapshot(snapshot, idx)
+    start_button.post_init()
+
+    delete_button.disabled = snapshot == null
+
+
+func set_snapshot(ss, i: int) -> void:
+    snapshot = ss
+    idx = i
+
+
+func _on_start_pressed() -> void:
+    emit_signal("start")
+
+
+func _on_delete_pressed() -> void:
+    emit_signal("delete_timeline")
