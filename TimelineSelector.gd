@@ -47,11 +47,6 @@ func _unhandled_key_input(evt):
     }
 
     if evt is InputEventKey and evt.pressed and !evt.echo:
-        if evt.scancode == KEY_N:
-            timelines.append(Timeline.new())
-            Globals.live_timeline = len(timelines) - 1
-            get_tree().change_scene("res://Main.tscn")
-        else:
-            for key in KEYS:
-                if evt.scancode == key:
-                    start_timeline(KEYS[key])
+        for key in KEYS:
+            if evt.scancode == key:
+                start_timeline(KEYS[key])
