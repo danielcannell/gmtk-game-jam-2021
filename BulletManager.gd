@@ -26,6 +26,7 @@ func make_snapshot_for_bullet(b: Bullet):
         "dead": b.dead,
         "damage": b.damage,
         "is_player": b.is_player,
+        "type": b.type
     }
 
 
@@ -38,6 +39,7 @@ func restore_snapshot_for_bullet(b: Bullet, snapshot):
     b.dead = snapshot["dead"]
     b.damage = snapshot["damage"]
     b.is_player = snapshot["is_player"]
+    b.type = snapshot["type"]
 
 
 func make_snapshot():
