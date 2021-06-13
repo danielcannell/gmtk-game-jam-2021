@@ -28,37 +28,44 @@ code = "shader_type canvas_item;
 
 uniform float scroll_speed = 4.0;
 
-uniform int OCTAVES = 6;
-
-float rand(vec2 coord){
-	return fract(sin(dot(coord, vec2(12.9898, 78.233)))* 43758.5453123);
+float hash1(vec2 p)
+{
+    p  = 50.0 * fract(p * 0.3183099);
+    return fract(p.x * p.y * (p.x + p.y));
 }
 
-float noise(vec2 coord){
-	vec2 i = floor(coord);
-	vec2 f = fract(coord);
+float noise(vec2 x)
+{
+    vec2 p = floor(x);
+    vec2 w = fract(x);
+    vec2 u = w * w * (3.0 - 2.0 * w);
 
-	// 4 corners of a rectangle surrounding our point
-	float a = rand(i);
-	float b = rand(i + vec2(1.0, 0.0));
-	float c = rand(i + vec2(0.0, 1.0));
-	float d = rand(i + vec2(1.0, 1.0));
-
-	vec2 cubic = f * f * (3.0 - 2.0 * f);
-
-	return mix(a, b, cubic.x) + (c - a) * cubic.y * (1.0 - cubic.x) + (d - b) * cubic.x * cubic.y;
+    float a = hash1(p + vec2(0, 0));
+    float b = hash1(p + vec2(1, 0));
+    float c = hash1(p + vec2(0, 1));
+    float d = hash1(p + vec2(1, 1));
+    
+    return -1.0 + 2.0 * (a + (b - a) * u.x + (c - a) * u.y + (a - b - c + d) * u.x * u.y);
 }
 
-float fbm(vec2 coord){
-	float value = 0.0;
-	float scale = 0.5;
+float fbm(vec2 x)
+{
+    mat2 m2 = mat2(vec2(0.80, 0.60), vec2(-0.60,  0.80));
 
-	for(int i = 0; i < OCTAVES; i++){
-		value += noise(coord) * scale;
-		coord *= 2.5;
-		scale *= 0.5;
-	}
-	return value;
+    float f = 1.9;
+    float s = 0.55;
+    float a = 0.0;
+    float b = 0.5;
+
+    for (int i = 0; i < 9; i++)
+    {
+        float n = noise(x);
+        a += b * n;
+        b *= s;
+        x = f * m2 * x;
+    }
+
+	return a;
 }
 
 
@@ -69,7 +76,7 @@ vec4 blend_over(vec4 top, vec4 bottom) {
 }
 
 
-void fragment(){
+void fragment() {
     vec2 shifteduv = UV * 4.0;
     vec2 shifteduv2 = UV * 4.0;
     shifteduv.y -= TIME * scroll_speed;
@@ -84,38 +91,29 @@ void fragment(){
     vec2 lowerduv = UV * 12.0;
     lowerduv.y -= TIME * scroll_speed / 3.0;
     float lower_n = fbm(lowerduv) ;
-    lower_n = mix(lower_n, fbm(lowerduv * 0.9 + vec2(-0.1 * TIME * scroll_speed,  0.1 * TIME * scroll_speed)), 0.1);
+
+    //lower_n = mix(lower_n, fbm(lowerduv * 0.9 + vec2(-0.1 * TIME * scroll_speed,  0.1 * TIME * scroll_speed)), 0.1);
 
     vec2 shadowdec = lowerduv + vec2(0.7, 0.2) + vec2(0.05) * fbm(UV * 12.0);
     float shadow = fbm(shadowdec);
-    shadow = mix(shadow, fbm(lowerduv * 0.9 + vec2(-0.1 * TIME * scroll_speed,  0.1 * TIME * scroll_speed)), 0.1);
-
-    n1 = smoothstep(0.5, 0.8, n1);
-    lower_n = smoothstep(0.35, 0.75, lower_n);
-    shadow = smoothstep(0.35, 0.75, shadow) * 0.6;
-
+    //shadow = mix(shadow, fbm(lowerduv * 0.9 + vec2(-0.1 * TIME * scroll_speed,  0.1 * TIME * scroll_speed)), 0.1);
+    
+    n1 = smoothstep(0.0, 0.6, n1);
+    lower_n = smoothstep(0.0, 0.75, lower_n);
+    shadow = smoothstep(0.0, 0.75, shadow) * 0.6;
+    
     float n3 = 1. - ((1. - n1) * (1. - lower_n));
 
-    //COLOR = vec4(vec3(n3), 1.0);
-    //COLOR = vec4(1.0);
-    //shadow = 0.;
     vec3 shadow_col = vec3(0.0);
     vec3 cloud_col = vec3(1.0);
-
     float alpha = n3 + shadow * (1.-n3);
-    vec3 col = ((cloud_col * n3) + (shadow_col * shadow)* (1. - n3))/n3;
 
     COLOR = blend_over(vec4(cloud_col, n3), vec4(shadow_col, shadow));
-    //COLOR = vec4(vec3(col), clamp(alpha, 0., 1.));
-
-    //COLOR = vec4(0.0)
-    //COLOR.a = n3;
 }"
 
 [sub_resource type="ShaderMaterial" id=6]
 shader = SubResource( 3 )
 shader_param/scroll_speed = 4.0
-shader_param/OCTAVES = 6
 
 [sub_resource type="OpenSimplexNoise" id=7]
 octaves = 1
