@@ -242,7 +242,6 @@ func run_step(inputs: InputState, delta: float) -> void:
 
     if dmg_cooldown > 0:
         dmg_cooldown -= 1
-        print(dmg_cooldown)
 
     if health <= 0:
         emit_signal("death", position)
