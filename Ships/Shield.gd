@@ -6,7 +6,6 @@ onready var tween: Tween = $Tween
 onready var image = $Sprite
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
     self.connect("area_shape_entered", self, "_on_area_shape_entered")
 
