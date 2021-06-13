@@ -6,12 +6,17 @@ const HORIZONTAL_SPEED = 300
 const FORWARD_SPEED = 200
 const REVERSE_SPEED = 200
 
+const SHIELD_DRAIN_RATE = 1
+const SHIELD_RECHARGE_RATE = 2
+const MAX_SHIELD = 300
+
 const MAX_HP = 100.0
 
 onready var left_exhuast = $LeftExhaust;
 onready var right_exhuast = $RightExhaust;
 
 onready var shield = $Shield
+onready var shield_energy = $ShieldEnergy
 onready var image: AnimatedSprite = $Sprite
 onready var health_bar: Node2D = $HealthBar
 onready var bullet_manager: BulletManager = $"../../BulletManager"
@@ -162,7 +167,17 @@ func handle_fire(fire_pressed: bool):
                 emit_signal("fire", position, FIRE_VECTOR * FIRE_SPEED, true)
                 fire_cooldown = FIRE_COOLDOWN
         ShipType.SHIELD:
-            shield.set_state(fire_pressed)
+            if fire_pressed:
+                fire_cooldown -= SHIELD_DRAIN_RATE
+                if fire_cooldown < 0:
+                    fire_cooldown = 0
+            else:
+                fire_cooldown += SHIELD_RECHARGE_RATE
+                if fire_cooldown > MAX_SHIELD:
+                    fire_cooldown = MAX_SHIELD
+
+            shield_energy.set_fraction(float(fire_cooldown) / float(MAX_SHIELD))
+            shield.set_state(fire_pressed and fire_cooldown > 0)
 
 
 func run_step(inputs: InputState, delta: float) -> void:
@@ -197,6 +212,7 @@ func run_step(inputs: InputState, delta: float) -> void:
 
 func set_type(new_type: int) -> void:
     ship_type = new_type
+    shield_energy.visible = (ship_type == ShipType.SHIELD)
 
 
 func set_health(new_health: float) -> void:
