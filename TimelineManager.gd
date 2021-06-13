@@ -133,7 +133,6 @@ func _physics_process(delta: float) -> void:
             if i == live_timeline:
                 quit_timer = 120
 
-            print("saving ", i)
             tl.snapshot = _make_snapshot()
             _remove_ship(i)
             continue
@@ -154,7 +153,6 @@ func _physics_process(delta: float) -> void:
 
 
 func saved_effect(ship):
-    print("ship saved!!!!")
     var inst = SavedEffect.instance()
     add_child(inst)
     inst.position = ship.position
