@@ -12,11 +12,14 @@ func _ready():
     # p1.emitting = false
 
 
-func run():
+func _run():
     p1.emitting = true
     p2.emitting = true
     yield(get_tree().create_timer(4.0), "timeout")
     queue_free()
+
+func run():
+    call_deferred("_run")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
