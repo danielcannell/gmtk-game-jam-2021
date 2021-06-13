@@ -11,3 +11,24 @@ enum Layers {
     PLAYER,
     BULLETS,
 }
+
+const WAVES = [
+    {
+        "start": 2 * 60,
+        "paths": ["left_to_right"],
+        "count": 5,
+        "interval": 60,
+    },
+    {
+        "start": 15 * 60,
+        "paths": ["left_to_right_diagonal", "right_to_left_diagonal"],
+        "count": 10,
+        "interval": 60,
+    },
+    {
+        "start": 30 * 60,
+        "paths": ["loop"],
+        "count": 20,
+        "interval": 30,
+    }
+]

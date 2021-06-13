@@ -17,28 +17,6 @@ onready var paths = {
 }
 
 
-const WAVES = [
-    {
-        "start": 2 * 60,
-        "paths": ["left_to_right"],
-        "count": 5,
-        "interval": 60,
-    },
-    {
-        "start": 15 * 60,
-        "paths": ["left_to_right_diagonal", "right_to_left_diagonal"],
-        "count": 10,
-        "interval": 60,
-    },
-    {
-        "start": 30 * 60,
-        "paths": ["loop"],
-        "count": 20,
-        "interval": 30,
-    }
-]
-
-
 var enemies = []
 var wave_idx := 0
 var wave_active := false
@@ -64,15 +42,15 @@ func spawn_enemy_on_path(idx: String):
 
 
 func advance_waves(frame_num: int):
-    if wave_idx < len(WAVES) and !wave_active and frame_num > WAVES[wave_idx]["start"]:
+    if wave_idx < len(Globals.WAVES) and !wave_active and frame_num > Globals.WAVES[wave_idx]["start"]:
         wave_active = true
         spawn_timer = 0
-        spawn_count = WAVES[wave_idx]["count"]
+        spawn_count = Globals.WAVES[wave_idx]["count"]
 
     if wave_active:
         if spawn_timer == 0:
-            spawn_enemy_on_path(WAVES[wave_idx]["paths"][path_idx % len(WAVES[wave_idx]["paths"])])
-            spawn_timer = WAVES[wave_idx]["interval"]
+            spawn_enemy_on_path(Globals.WAVES[wave_idx]["paths"][path_idx % len(Globals.WAVES[wave_idx]["paths"])])
+            spawn_timer = Globals.WAVES[wave_idx]["interval"]
             spawn_count -= 1
             path_idx += 1
 
