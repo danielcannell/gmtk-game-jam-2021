@@ -1,12 +1,12 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://TimelinePanel.gd" type="Script" id=1]
+[ext_resource path="res://TimelineButton.gd" type="Script" id=1]
 [ext_resource path="res://Art/PlainButton.tres" type="Theme" id=2]
 [ext_resource path="res://Art/red-ship.png" type="Texture" id=3]
 [ext_resource path="res://Art/energy-ship.png" type="Texture" id=4]
 [ext_resource path="res://Art/shield-ship.png" type="Texture" id=5]
 
-[node name="TimelinePanel" type="Button"]
+[node name="TimelineButton" type="Button"]
 margin_right = 150.0
 margin_bottom = 250.0
 size_flags_horizontal = 3

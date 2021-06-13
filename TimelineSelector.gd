@@ -1,7 +1,7 @@
 extends Node
 
 
-const Panel = preload("res://TimelinePanel.tscn")
+const Panel = preload("res://TimelineButton.tscn")
 
 
 onready var timelines = Globals.timelines
