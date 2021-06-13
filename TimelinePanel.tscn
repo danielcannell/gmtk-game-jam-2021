@@ -40,3 +40,4 @@ margin_top = 561.0
 margin_right = 974.0
 margin_bottom = 600.0
 theme = ExtResource( 2 )
+text = "Reset timeline"
