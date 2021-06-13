@@ -21,6 +21,8 @@ func post_init():
     start_button.set_snapshot(snapshot, idx)
     start_button.post_init()
 
+    delete_button.disabled = snapshot == null
+
 
 func set_snapshot(ss, i: int) -> void:
     snapshot = ss
