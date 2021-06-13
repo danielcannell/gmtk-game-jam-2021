@@ -5,15 +5,29 @@ const Panel = preload("res://TimelinePanel.tscn")
 
 
 onready var timelines = Globals.timelines
-onready var hbox = $CanvasLayer/HBoxContainer
+onready var hbox = $CanvasLayer/MarginContainer/HBoxContainer
+onready var margins = $CanvasLayer/MarginContainer
 
 
 func _ready():
+    var MAX_BOX_SIZE := 400.0
+    var SEP := 50.0
+    var needed_size = len(timelines) * (MAX_BOX_SIZE + SEP)
+    var half_margin := SEP
+    if needed_size < margins.rect_size.x:
+        half_margin = (margins.rect_size.x - needed_size) / 2
+    margins.set("custom_constants/margin_left", half_margin)
+    margins.set("custom_constants/margin_right", half_margin)
+
     for i in len(timelines):
         var tl = timelines[i] as Timeline
         var ss = tl.snapshot
-        var p: Control = Panel.instance()
+        var player_ship = ss["ships"][i]
+        var dead: bool = player_ship == null || player_ship["dead"]
+
+        var p = Panel.instance()
         p.set_snapshot(ss, i)
+        p.disabled = dead
         hbox.add_child(p)
 
 
