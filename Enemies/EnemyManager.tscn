@@ -24,7 +24,7 @@ _data = {
 
 [sub_resource type="Curve2D" id=5]
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 534.369, -160.363, 0, 0, 0, 0, 533.109, 203.551 )
+"points": PoolVector2Array( 0, 0, 0, 0, 534.369, -160.363, 0, 0, 0, 0, 534.369, 106.74 )
 }
 
 [node name="EnemyManager" type="Node2D"]

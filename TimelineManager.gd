@@ -3,6 +3,7 @@ extends Node
 
 const Ship = preload("res://Ships/Ship.tscn")
 const Explosion = preload("res://Effects/Explosion.tscn")
+const SavedEffect = preload("res://Effects/ShipSaved.tscn")
 
 onready var bullet_manager = $"../BulletManager"
 onready var enemy_manager = $"../EnemyManager"
@@ -110,8 +111,13 @@ func _physics_process(delta: float) -> void:
         if ship == null || !is_instance_valid(ship):
             continue
 
+        var end_of_timeline: bool = tl.snapshot != null && frame_num > tl.snapshot["frame_num"];
+
+        if end_of_timeline:
+            saved_effect(ship)
+
         # De-spawn ships when they die or reach the end of their timeline
-        if ship.dead || (tl.snapshot != null && frame_num > tl.snapshot["frame_num"]):
+        if ship.dead || end_of_timeline:
             print("saving ", i)
             tl.snapshot = _make_snapshot()
             _remove_ship(i)
@@ -125,3 +131,11 @@ func _physics_process(delta: float) -> void:
     bullet_manager.run_tick(delta, frame_num)
 
     frame_num += 1
+
+
+func saved_effect(ship):
+    print("ship saved!!!!")
+    var inst = SavedEffect.instance()
+    add_child(inst)
+    inst.position = ship.position
+    inst.run(ship.ship_type)
