@@ -11,8 +11,8 @@ onready var _health = $VBoxContainer/Health
 
 func _ready():
     _name.text = description
-    _dist.text = str(distance) + "m"
-    _health.text = str(int(health))
+    _dist.text = "Distance: " + str(distance) + "m"
+    _health.text = "Health: " + str(int(health))
 
 
 func set_snapshot(ss, idx: int) -> void:
