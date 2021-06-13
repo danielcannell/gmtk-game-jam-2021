@@ -1,4 +1,5 @@
 extends Node2D
+class_name Ship
 
 
 const HORIZONTAL_SPEED = 300
@@ -51,6 +52,7 @@ const CONFIG = {
 
 var health := MAX_HP
 var fire_cooldown := 0
+var dead := false
 
 var left_exhaust_init_pos = Vector2()
 var right_exhaust_init_pos = Vector2()
@@ -72,6 +74,7 @@ func make_snapshot():
         "position": position,
         "fire_cooldown": fire_cooldown,
         "ship_type": ship_type,
+        "dead": dead,
     }
 
 
@@ -82,15 +85,14 @@ func restore_snapshot(snapshot):
             "position": Vector2(0, 0),
             "fire_cooldown": 0,
             "ship_type": ShipType.BULLET,
+            "dead": true,
         }
 
     set_health(snapshot["health"])
     position = snapshot["position"]
     fire_cooldown = snapshot["fire_cooldown"]
     ship_type = snapshot["ship_type"]
-
-    if health <= 0:
-        queue_free()
+    dead = snapshot["dead"]
 
 
 func damage_effect() -> void:
@@ -182,7 +184,7 @@ func run_step(inputs: InputState, delta: float) -> void:
 
     if health <= 0:
         emit_signal("death", position)
-        queue_free()
+        dead = true
 
 
 func set_type(new_type: int) -> void:

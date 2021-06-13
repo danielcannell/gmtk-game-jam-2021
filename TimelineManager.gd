@@ -44,6 +44,13 @@ func _create_ships() -> void:
         add_child(ship)
 
 
+func _remove_ship(idx) -> void:
+    var ship = ships[idx]
+    remove_child(ship)
+    ship.queue_free()
+    ships[idx] = null
+
+
 func _make_snapshot():
     var ships_snapshot = []
 
@@ -73,6 +80,10 @@ func _restore_snapshot(snapshot):
     for i in snapshot["ships"].size():
         ships[i].restore_snapshot(snapshot["ships"][i])
 
+        # Early cleanup of dead ships, so the don't get snapshots
+        if ships[i].dead:
+            _remove_ship(i)
+
     enemy_manager.restore_snapshot(snapshot["enemies"])
 
 
@@ -88,20 +99,20 @@ func _physics_process(delta: float) -> void:
     # Get inputs and append to 'live' timeline if changed
     timelines[live_timeline].set_state(frame_num, InputManager.get_state())
 
+    # Tick all ships
     for i in range(len(timelines)):
         var tl: Timeline = timelines[i]
         var ship: Node2D = ships[i]
 
-        if !is_instance_valid(ship):
+        if ship == null || !is_instance_valid(ship):
             continue
 
-        # De-spawn ships when they reach the end of their timeline
-        #
-        # TODO: We also need to do this when a ship dies!
-        if tl.snapshot != null:
-            if frame_num > tl.snapshot["frame_num"]:
-                tl.snapshot = _make_snapshot()
-                ship.queue_free()
+        # De-spawn ships when they die or reach the end of their timeline
+        if ship.dead || (tl.snapshot != null && frame_num > tl.snapshot["frame_num"]):
+            print("saving ", i)
+            tl.snapshot = _make_snapshot()
+            _remove_ship(i)
+            continue
 
         # Get current input state for this ship and run tick
         var state = tl.get_state(frame_num)
