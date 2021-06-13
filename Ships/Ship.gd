@@ -76,7 +76,7 @@ var right_exhaust_init_pos := Vector2()
 var ship_type: int = ShipType.SHIELD
 
 
-signal fire(position, velocity)
+signal fire(position, velocity, is_player, type)
 signal death(position)
 
 
@@ -174,7 +174,11 @@ func handle_fire(fire_pressed: bool):
     match ship_type:
         ShipType.BULLET:
             if fire_pressed && fire_cooldown == 0:
-                emit_signal("fire", position, FIRE_VECTOR * FIRE_SPEED, true)
+                emit_signal("fire", position, FIRE_VECTOR * FIRE_SPEED, true, Bullet.BulletType.NORMAL)
+                fire_cooldown = FIRE_COOLDOWN
+        ShipType.ENERGY:
+            if fire_pressed && fire_cooldown == 0:
+                emit_signal("fire", position, FIRE_VECTOR * FIRE_SPEED, true, Bullet.BulletType.ENERGY)
                 fire_cooldown = FIRE_COOLDOWN
         ShipType.SHIELD:
             if fire_pressed:
@@ -188,6 +192,8 @@ func handle_fire(fire_pressed: bool):
 
             shield_energy.set_fraction(float(fire_cooldown) / float(MAX_SHIELD))
             shield.set_state(fire_pressed and fire_cooldown > 0)
+
+
 
 
 func run_step(inputs: InputState, delta: float) -> void:

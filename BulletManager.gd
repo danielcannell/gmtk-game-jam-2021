@@ -2,13 +2,15 @@ class_name BulletManager
 extends Node2D
 
 export (Array, Image) var frames
-export (float) var image_change_offset = 0.2
+export (Array, Image) var energy_frames
+export (float) var image_change_offset = 0.05
 export (float) var max_lifetime = 10.0
 
 # the areas in which bullets operate
 onready var shared_area = $SharedArea;
 
 onready var max_images = frames.size()
+onready var max_energy_images = energy_frames.size()
 
 var bullets : Array = []
 var bounding_box : Rect2
@@ -49,7 +51,7 @@ func make_snapshot():
 
 func restore_snapshot(snapshot):
     for b in snapshot:
-        spawn_bullet(Vector2(), Vector2(), false)
+        spawn_bullet(Vector2(), Vector2(), false, Bullet.BulletType.NORMAL)
         restore_snapshot_for_bullet(bullets[-1], b)
 
 
@@ -97,22 +99,26 @@ func run_tick(delta: float, _frame_num: int) -> void:
 
 func _draw() -> void:
     var offset = frames[0].get_size() / 2.0
+    var energy_offset = energy_frames[0].get_size() / 2.0
     for i in range(0, bullets.size()):
         var bullet = bullets[i]
-        if bullet.animation_lifetime >= image_change_offset:
-            bullet.image_offset += 1
-            bullet.animation_lifetime = 0.0
-            if bullet.image_offset >= max_images:
-                bullet.image_offset = 0
-
         var color = Globals.enemy_bullet_color
         if bullet.is_player:
             color = Globals.player_bullet_color
-        draw_texture(
-            frames[bullet.image_offset],
-            bullet.position - offset,
-            color
-        )
+
+        if bullet.type == Bullet.BulletType.NORMAL:
+            draw_texture(
+                frames[0],
+                bullet.position - offset,
+                color
+            )
+        else:
+            if bullet.animation_lifetime >= image_change_offset:
+                bullet.image_offset = (bullet.image_offset + 1) % max_energy_images
+                bullet.animation_lifetime = 0.0
+            draw_texture(
+                    energy_frames[bullet.image_offset],
+                    bullet.position - energy_offset)
 
 # ================================= Public ================================== #
 
@@ -121,11 +127,12 @@ func set_bounding_box(box: Rect2) -> void:
     bounding_box = box
 
 # Register a new bullet in the array with the optimization logic
-func spawn_bullet(position: Vector2, velocity: Vector2, is_player: bool) -> void:
+func spawn_bullet(position: Vector2, velocity: Vector2, is_player: bool, type: int) -> void:
     var bullet : Bullet = Bullet.new()
     bullet.velocity = velocity
     bullet.position  = position
     bullet.is_player = is_player
+    bullet.type = type
 
     _configure_collision_for_bullet(bullet)
 

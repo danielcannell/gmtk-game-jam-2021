@@ -42,7 +42,7 @@ func run_tick(delta: float) -> void:
     if fire_cooldown == 0:
         for i in [-20, 0, 20]:
             var vec = FIRE_VECTOR.rotated(deg2rad(i))
-            emit_signal("fire", global_position, vec * FIRE_SPEED, false)
+            emit_signal("fire", global_position, vec * FIRE_SPEED, false, Bullet.BulletType.NORMAL)
         fire_cooldown = FIRE_COOLDOWN
 
     if fire_cooldown > 0:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://TimelineManager.gd" type="Script" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
@@ -6,6 +6,10 @@
 [ext_resource path="res://BulletManager.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Art/orb.png" type="Texture" id=5]
 [ext_resource path="res://Art/blend-ground.png" type="Texture" id=6]
+[ext_resource path="res://Art/energy-4.png" type="Texture" id=7]
+[ext_resource path="res://Art/energy-2.png" type="Texture" id=8]
+[ext_resource path="res://Art/energy-1.png" type="Texture" id=9]
+[ext_resource path="res://Art/energy-3.png" type="Texture" id=10]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -153,6 +157,7 @@ texture = SubResource( 6 )
 
 [node name="BulletManager" parent="." instance=ExtResource( 4 )]
 frames = [ ExtResource( 5 ) ]
+energy_frames = [ ExtResource( 9 ), ExtResource( 8 ), ExtResource( 10 ), ExtResource( 7 ) ]
 
 [node name="TimelineManager" type="Node" parent="."]
 script = ExtResource( 1 )
