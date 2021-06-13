@@ -2,7 +2,7 @@ extends PathFollow2D
 
 
 const SPEED = 50
-const MAX_HP = 2000.0
+const MAX_HP = 10000.0
 
 onready var health_bar: Node2D = $HealthBar
 onready var area: Area2D = $Area2D
@@ -24,7 +24,7 @@ signal death(position)
 const FIRE_VECTOR := Vector2(0, 1)
 const FIRE_SPEED := 300.0
 const FIRE_COOLDOWN := 120
-const NUM_BULLETS_IN_BARAGE := 30
+const NUM_BULLETS_IN_BARAGE := 20
 
 
 func _ready():
@@ -33,9 +33,18 @@ func _ready():
     area.connect("area_shape_entered", self, "_on_area_shape_entered")
 
 
+func should_fire(frame_num: int):
+    var fast = (frame_num % (10 * 60)) < 30
+
+    if fast:
+        return frame_num % 6 == 0
+    else:
+        return frame_num % FIRE_COOLDOWN == 0
+
+
 func fire(frame_num: int):
     # Change the angle each time to stop you finding a safe spot
-    var offset := float(frame_num)
+    var offset := 0.4 * float(frame_num)
 
     for i in NUM_BULLETS_IN_BARAGE:
         var fire_angle = offset + 2.0 * 3.1415 * i / NUM_BULLETS_IN_BARAGE
@@ -49,11 +58,8 @@ func run_tick(delta: float, frame_num: int) -> void:
     if unit_offset > 1.0:
         offset = 1.0
 
-    if fire_cooldown == 0:
+    if should_fire(frame_num):
         fire(frame_num)
-        fire_cooldown = FIRE_COOLDOWN
-
-    fire_cooldown -= 1
 
     if health <= 0:
         emit_signal("death", global_position)
