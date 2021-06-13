@@ -32,14 +32,14 @@ const WAVES = [
         "start": 15 * 60,
         "paths": ["left_to_right_diagonal", "right_to_left_diagonal"],
         "count": 10,
-        "interval": 60,
+        "interval": 120,
         "type": EnemyType.BASIC,
     },
     {
         "start": 30 * 60,
         "paths": ["loop"],
         "count": 20,
-        "interval": 30,
+        "interval": 60,
         "type": EnemyType.BASIC,
     },
     {

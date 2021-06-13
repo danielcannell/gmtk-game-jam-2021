@@ -12,7 +12,7 @@ const SHIELD_ACTIVATION_COST = 50
 const MAX_SHIELD = 300
 const INVIN_FRAMES = 20.0
 
-const MAX_HP = 100.0
+const MAX_HP = 300.0
 
 onready var left_exhuast = $LeftExhaust;
 onready var right_exhuast = $RightExhaust;
