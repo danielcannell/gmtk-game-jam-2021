@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Art/ship-right.png" type="Texture" id=1]
 [ext_resource path="res://Ships/Ship.gd" type="Script" id=2]
@@ -19,6 +19,7 @@
 [ext_resource path="res://Art/energy-ship-right.png" type="Texture" id=17]
 [ext_resource path="res://Art/energy-ship-left.png" type="Texture" id=18]
 [ext_resource path="res://Art/red-ship.png" type="Texture" id=19]
+[ext_resource path="res://ShieldEnergy.tscn" type="PackedScene" id=20]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -41,8 +42,11 @@ script = ExtResource( 2 )
 [node name="HealthBar" parent="." instance=ExtResource( 5 )]
 position = Vector2( 0, 57 )
 
+[node name="ShieldEnergy" parent="." instance=ExtResource( 20 )]
+position = Vector2( 0, 66 )
+
 [node name="Sprite" type="AnimatedSprite" parent="."]
-position = Vector2( 0, -1.03938 )
+position = Vector2( 0, -0.03938 )
 z_index = 1
 frames = SubResource( 1 )
 frame = 5
@@ -71,7 +75,8 @@ offset = Vector2( 0, -4 )
 
 [node name="Shield" type="Area2D" parent="."]
 visible = false
-position = Vector2( -0.793701, 0 )
+position = Vector2( -0.793701, 44 )
+scale = Vector2( 4, 2 )
 collision_layer = 2
 collision_mask = 4
 script = ExtResource( 9 )
