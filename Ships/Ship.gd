@@ -2,9 +2,9 @@ extends Node2D
 class_name Ship
 
 
-const HORIZONTAL_SPEED = 300
-const FORWARD_SPEED = 200
-const REVERSE_SPEED = 200
+const HORIZONTAL_SPEED = 500
+const FORWARD_SPEED = 400
+const REVERSE_SPEED = 300
 
 const SHIELD_DRAIN_RATE = 1
 const SHIELD_RECHARGE_RATE = 2
@@ -180,6 +180,10 @@ func handle_fire(fire_pressed: bool):
             if fire_pressed && fire_cooldown == 0:
                 emit_signal("fire", position, FIRE_VECTOR * FIRE_SPEED, true, Bullet.BulletType.ENERGY)
                 fire_cooldown = FIRE_COOLDOWN
+
+            if fire_cooldown > 0:
+                fire_cooldown -= 1
+
         ShipType.SHIELD:
             if fire_pressed:
                 fire_cooldown -= SHIELD_DRAIN_RATE
@@ -217,9 +221,6 @@ func run_step(inputs: InputState, delta: float) -> void:
     position.y = clamp(position.y, 0, screen_size.y)
 
     handle_fire(inputs.is_pressed(InputType.FIRE))
-
-    if fire_cooldown > 0:
-        fire_cooldown -= 1
 
     if health <= 0:
         emit_signal("death", position)
