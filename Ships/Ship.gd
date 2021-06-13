@@ -45,6 +45,7 @@ const CONFIG = {
        },
        "exhaust_turn_ofs": Vector2(3, 0),
        "exhaust_turn_y_ofs": -5,
+       "fire_cooldown": 5,
     },
     ShipType.SHIELD: {
         "frames": {
@@ -54,6 +55,7 @@ const CONFIG = {
         },
         "exhaust_turn_ofs": Vector2(3, 0),
         "exhaust_turn_y_ofs": -5,
+        "fire_cooldown": 5,
     },
     ShipType.ENERGY: {
         "frames": {
@@ -63,6 +65,7 @@ const CONFIG = {
         },
         "exhaust_turn_ofs": Vector2(3, 0),
         "exhaust_turn_y_ofs": -5,
+        "fire_cooldown": 50,
     }
 }
 
@@ -171,11 +174,12 @@ func _update_ship(velocity: Vector2) -> void:
 
 
 func handle_fire(fire_pressed: bool):
+    var conf = CONFIG[ship_type]
     match ship_type:
         ShipType.BULLET:
             if fire_pressed && fire_cooldown == 0:
                 emit_signal("fire", position, FIRE_VECTOR * FIRE_SPEED, true, Bullet.BulletType.NORMAL)
-                fire_cooldown = FIRE_COOLDOWN
+                fire_cooldown = conf['fire_cooldown']
 
             if fire_cooldown > 0:
                 fire_cooldown -= 1
@@ -183,7 +187,7 @@ func handle_fire(fire_pressed: bool):
         ShipType.ENERGY:
             if fire_pressed && fire_cooldown == 0:
                 emit_signal("fire", position, FIRE_VECTOR * FIRE_SPEED, true, Bullet.BulletType.ENERGY)
-                fire_cooldown = FIRE_COOLDOWN
+                fire_cooldown = conf['fire_cooldown']
 
             if fire_cooldown > 0:
                 fire_cooldown -= 1
