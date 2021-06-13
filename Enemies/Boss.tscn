@@ -13,7 +13,8 @@ rotate = false
 script = ExtResource( 2 )
 
 [node name="HealthBar" parent="." instance=ExtResource( 3 )]
-position = Vector2( 0, -33 )
+position = Vector2( 0, -120 )
+scale = Vector2( 4, 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
 rotation = -4.46638e-06

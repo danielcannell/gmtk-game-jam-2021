@@ -78,7 +78,7 @@ func run_tick(delta: float, frame_num: int) -> void:
             queued_for_destruction.append(enemy)
             continue
 
-        enemy.run_tick(delta)
+        enemy.run_tick(delta, frame_num)
 
     for enemy in queued_for_destruction:
         var idx = enemy.path_idx
