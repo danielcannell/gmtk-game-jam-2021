@@ -84,7 +84,21 @@ func advance_waves():
         spawn_timer -= 1
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
+    var queued_for_destruction = []
+    for enemy in enemies:
+        if enemy.dead:
+            queued_for_destruction.append(enemy)
+            continue
+
+        enemy.run_tick(delta)
+
+    for enemy in queued_for_destruction:
+        var idx = enemy.path_idx
+        paths[idx].remove_child(enemy)
+        enemies.erase(enemy)
+        enemy.queue_free()
+
     frame_num += 1
     advance_waves()
 
@@ -98,6 +112,7 @@ func make_snapshot_for_enemy(e):
         "health": e.health,
         "fire_cooldown": e.fire_cooldown,
         "path_idx": e.path_idx,
+        "dead": e.dead,
     }
 
 
@@ -105,6 +120,7 @@ func restore_snapshot_for_enemy(e, snapshot):
     e.offset = snapshot["offset"]
     e.set_health(snapshot["health"])
     e.fire_cooldown = snapshot["fire_cooldown"]
+    e.dead = snapshot["dead"]
 
 
 func make_snapshot():

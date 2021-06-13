@@ -13,6 +13,7 @@ onready var tween = $Tween
 var health := MAX_HP
 var fire_cooldown := 0
 var path_idx := ""
+var dead := false
 
 
 signal fire(position, velocity)
@@ -30,11 +31,11 @@ func _ready():
     area.connect("area_shape_entered", self, "_on_area_shape_entered")
 
 
-func _physics_process(delta: float) -> void:
+func run_tick(delta: float) -> void:
     offset += SPEED * delta
 
     if unit_offset > 0.99:
-        queue_free()
+        dead = true
         return
 
     if fire_cooldown == 0:
@@ -48,7 +49,7 @@ func _physics_process(delta: float) -> void:
 
     if health <= 0:
         emit_signal("death", global_position)
-        queue_free()
+        dead = true
 
 
 func _on_area_shape_entered(_area_id: int, _area: Area2D, area_shape: int, _local_shape: int) -> void:
