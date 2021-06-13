@@ -43,6 +43,7 @@ func _ready():
 func on_delete_timeline(idx: int) -> void:
     timelines[idx] = Timeline.new()
     panels[idx].set_snapshot(null, idx)
+    panels[idx].post_init()
 
 
 func start_timeline(idx: int) -> void:
