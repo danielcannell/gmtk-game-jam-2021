@@ -10,6 +10,10 @@ onready var margins = $CanvasLayer/MarginContainer
 
 
 func _ready():
+    # First-time init
+    while len(timelines) < 3:
+        timelines.append(Timeline.new())
+
     var MAX_BOX_SIZE := 400.0
     var SEP := 50.0
     var needed_size = len(timelines) * (MAX_BOX_SIZE + SEP)
@@ -22,12 +26,9 @@ func _ready():
     for i in len(timelines):
         var tl = timelines[i] as Timeline
         var ss = tl.snapshot
-        var player_ship = ss["ships"][i]
-        var dead: bool = player_ship == null || player_ship["dead"]
 
         var p = Panel.instance()
         p.set_snapshot(ss, i)
-        p.disabled = dead
         p.connect("pressed", self, "start_timeline", [i])
         hbox.add_child(p)
 
@@ -43,13 +44,6 @@ func _unhandled_key_input(evt):
         KEY_0: 0,
         KEY_1: 1,
         KEY_2: 2,
-        KEY_3: 3,
-        KEY_4: 4,
-        KEY_5: 5,
-        KEY_6: 6,
-        KEY_7: 7,
-        KEY_8: 8,
-        KEY_9: 9,
     }
 
     if evt is InputEventKey and evt.pressed and !evt.echo:

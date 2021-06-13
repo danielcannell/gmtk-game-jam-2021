@@ -54,3 +54,15 @@ text = "Health"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Help" type="Label" parent="VBoxContainer"]
+margin_top = 54.0
+margin_right = 136.0
+margin_bottom = 136.0
+size_flags_vertical = 3
+text = "Help"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

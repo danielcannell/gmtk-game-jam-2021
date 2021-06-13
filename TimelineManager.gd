@@ -42,11 +42,9 @@ func _create_ships() -> void:
         var live_ss = timelines[live_timeline].snapshot
 
         # Early cleanup of dead ships, so they don't get snapshots
-        if live_ss != null:
-            if own_ss != null:
-                if own_ss["frame_num"] < live_ss["frame_num"]:
-                    ships.append(null)
-                    continue
+        if i != live_timeline && (own_ss == null || (live_ss != null && own_ss["frame_num"] < live_ss["frame_num"])):
+            ships.append(null)
+            continue
 
         var ship := Ship.instance()
         ship.connect("fire", bullet_manager, "spawn_bullet")
