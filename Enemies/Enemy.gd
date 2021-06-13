@@ -32,7 +32,7 @@ func _ready():
     area.connect("area_shape_entered", self, "_on_area_shape_entered")
 
 
-func run_tick(delta: float) -> void:
+func run_tick(delta: float, _frame_num: int) -> void:
     offset += SPEED * delta
 
     if unit_offset > 0.99:

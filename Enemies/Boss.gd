@@ -21,9 +21,10 @@ signal fire(position, velocity)
 signal death(position)
 
 
-const FIRE_VECTOR = Vector2(0, 1)
-const FIRE_SPEED = 300.0
-const FIRE_COOLDOWN = 35
+const FIRE_VECTOR := Vector2(0, 1)
+const FIRE_SPEED := 300.0
+const FIRE_COOLDOWN := 120
+const NUM_BULLETS_IN_BARAGE := 30
 
 
 func _ready():
@@ -32,20 +33,27 @@ func _ready():
     area.connect("area_shape_entered", self, "_on_area_shape_entered")
 
 
-func run_tick(delta: float) -> void:
+func fire(frame_num: int):
+    # Change the angle each time to stop you finding a safe spot
+    var offset := float(frame_num)
+
+    for i in NUM_BULLETS_IN_BARAGE:
+        var fire_angle = offset + 2.0 * 3.1415 * i / NUM_BULLETS_IN_BARAGE
+        var vec = FIRE_VECTOR.rotated(fire_angle)
+        emit_signal("fire", global_position, vec * FIRE_SPEED, false)
+
+
+func run_tick(delta: float, frame_num: int) -> void:
     offset += SPEED * delta
 
     if unit_offset > 1.0:
         offset = 1.0
 
     if fire_cooldown == 0:
-        for i in [-20, 0, 20]:
-            var vec = FIRE_VECTOR.rotated(deg2rad(i))
-            emit_signal("fire", global_position, vec * FIRE_SPEED, false)
+        fire(frame_num)
         fire_cooldown = FIRE_COOLDOWN
 
-    if fire_cooldown > 0:
-        fire_cooldown -= 1
+    fire_cooldown -= 1
 
     if health <= 0:
         emit_signal("death", global_position)
