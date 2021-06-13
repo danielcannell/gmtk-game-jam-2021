@@ -19,11 +19,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://BulletManager.gd"
 }, {
-"base": "Node2D",
-"class": "EnemyManager",
-"language": "GDScript",
-"path": "res://Enemies/EnemyManager.gd"
-}, {
 "base": "Reference",
 "class": "InputManager",
 "language": "GDScript",
@@ -39,11 +34,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Types/InputType.gd"
 }, {
-"base": "Node2D",
-"class": "Ship",
-"language": "GDScript",
-"path": "res://Ships/Ship.gd"
-}, {
 "base": "Reference",
 "class": "Timeline",
 "language": "GDScript",
@@ -52,11 +42,9 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "Bullet": "",
 "BulletManager": "",
-"EnemyManager": "",
 "InputManager": "",
 "InputState": "",
 "InputType": "",
-"Ship": "",
 "Timeline": ""
 }
 
