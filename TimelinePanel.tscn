@@ -1,11 +1,14 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://TimelinePanel.gd" type="Script" id=1]
 [ext_resource path="res://Art/PlainButton.tres" type="Theme" id=2]
+[ext_resource path="res://Art/red-ship.png" type="Texture" id=3]
+[ext_resource path="res://Art/energy-ship.png" type="Texture" id=4]
+[ext_resource path="res://Art/shield-ship.png" type="Texture" id=5]
 
 [node name="TimelinePanel" type="Button"]
 margin_right = 150.0
-margin_bottom = 150.0
+margin_bottom = 250.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 2 )
@@ -13,6 +16,7 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+frames = [ ExtResource( 3 ), ExtResource( 5 ), ExtResource( 4 ) ]
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_right = 1.0
@@ -37,29 +41,57 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Dist" type="Label" parent="VBoxContainer"]
+[node name="Type" type="Label" parent="VBoxContainer"]
 margin_top = 18.0
 margin_right = 136.0
 margin_bottom = 32.0
+text = "Description"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Dist" type="Label" parent="VBoxContainer"]
+margin_top = 36.0
+margin_right = 136.0
+margin_bottom = 50.0
 text = "Distance"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Health" type="Label" parent="VBoxContainer"]
-margin_top = 36.0
+margin_top = 54.0
 margin_right = 136.0
-margin_bottom = 50.0
+margin_bottom = 68.0
 text = "Health"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Help" type="Label" parent="VBoxContainer"]
-margin_top = 54.0
+[node name="Control" type="Control" parent="VBoxContainer"]
+margin_top = 72.0
 margin_right = 136.0
-margin_bottom = 136.0
+margin_bottom = 72.0
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
+margin_top = 76.0
+margin_right = 136.0
+margin_bottom = 172.0
 size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/CenterContainer"]
+margin_left = 68.0
+margin_top = 48.0
+margin_right = 68.0
+margin_bottom = 48.0
+
+[node name="Help" type="Label" parent="VBoxContainer"]
+margin_top = 176.0
+margin_right = 136.0
+margin_bottom = 236.0
+rect_min_size = Vector2( 0, 60 )
+size_flags_vertical = 1
 text = "Help"
 align = 1
 valign = 1

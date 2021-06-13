@@ -41,9 +41,9 @@ func start_timeline(idx: int) -> void:
 
 func _unhandled_key_input(evt):
     var KEYS = {
-        KEY_0: 0,
-        KEY_1: 1,
-        KEY_2: 2,
+        KEY_1: 0,
+        KEY_2: 1,
+        KEY_3: 2,
     }
 
     if evt is InputEventKey and evt.pressed and !evt.echo:
