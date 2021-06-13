@@ -6,22 +6,27 @@ const Enemy = preload("res://Enemies/Enemy.tscn")
 const Explosion = preload("res://Effects/Explosion.tscn")
 
 
-onready var loop_path = $LoopPath
-onready var across_path = $AcrossPath
 onready var bullet_manager: BulletManager = $"../BulletManager"
-onready var paths = [loop_path, across_path]
+
+onready var paths = {
+    "loop": $LoopPath,
+    "left_to_right": $LeftToRightPath,
+    "left_to_right_diagonal": $LeftToRightDiagonalPath,
+    "right_to_left_diagonal": $RightToLeftDiagonalPath,
+}
 
 var enemies = []
 var frame_num = 0
 
-func on_death(pos):
+
+func on_death(pos: Vector2):
     var effect = Explosion.instance()
     add_child(effect)
     effect.position = pos
     effect.run()
 
 
-func spawn_enemy_on_path(idx: int):
+func spawn_enemy_on_path(idx: String):
     var enemy = Enemy.instance()
     enemy.path_idx = idx
     enemy.connect("fire", bullet_manager, "spawn_bullet")
@@ -34,9 +39,9 @@ func _physics_process(_delta: float) -> void:
     frame_num += 1
 
     if frame_num % (60 * 4) == 0:
-        spawn_enemy_on_path(1)
+        spawn_enemy_on_path("left_to_right")
     if frame_num % (60 * 5) == 0:
-        spawn_enemy_on_path(0)
+        spawn_enemy_on_path("loop")
 
 
 #### snapshot
