@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Art/ship-right.png" type="Texture" id=1]
 [ext_resource path="res://Ships/Ship.gd" type="Script" id=2]
@@ -13,10 +13,16 @@
 [ext_resource path="res://Art/shield-ship-right.png" type="Texture" id=11]
 [ext_resource path="res://Art/shield-ship.png" type="Texture" id=12]
 [ext_resource path="res://Art/SmallFont.tres" type="DynamicFont" id=13]
+[ext_resource path="res://Art/red-ship-right.png" type="Texture" id=14]
+[ext_resource path="res://Art/energy-ship.png" type="Texture" id=15]
+[ext_resource path="res://Art/red-ship-left.png" type="Texture" id=16]
+[ext_resource path="res://Art/energy-ship-right.png" type="Texture" id=17]
+[ext_resource path="res://Art/energy-ship-left.png" type="Texture" id=18]
+[ext_resource path="res://Art/red-ship.png" type="Texture" id=19]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
-"frames": [ ExtResource( 4 ), ExtResource( 3 ), ExtResource( 1 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ) ],
+"frames": [ ExtResource( 4 ), ExtResource( 3 ), ExtResource( 1 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 18 ), ExtResource( 17 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 14 ), ExtResource( 19 ) ],
 "loop": true,
 "name": "default",
 "speed": 5.0

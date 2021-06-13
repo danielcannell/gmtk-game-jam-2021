@@ -44,7 +44,7 @@ func _create_ships() -> void:
         add_child(ship)
         ship.set_label(str(i))
 
-        ship.set_type(i % 2)
+        ship.set_type(i % 3)
 
 
 func _remove_ship(idx) -> void:

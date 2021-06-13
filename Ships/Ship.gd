@@ -21,7 +21,8 @@ onready var label = $"Lbls/Label"
 
 enum ShipType {
     BULLET,
-    SHIELD
+    SHIELD,
+    ENERGY,
 }
 
 enum Frames {
@@ -33,9 +34,9 @@ enum Frames {
 const CONFIG = {
     ShipType.BULLET: {
        "frames": {
-           Frames.FLAT: 0,
-           Frames.LEFT: 1,
-           Frames.RIGHT: 2
+           Frames.FLAT: 11,
+           Frames.LEFT: 9,
+           Frames.RIGHT: 10
        },
        "exhaust_turn_ofs": Vector2(3, 0),
        "exhaust_turn_y_ofs": -5,
@@ -45,6 +46,15 @@ const CONFIG = {
             Frames.FLAT: 5,
             Frames.LEFT: 3,
             Frames.RIGHT: 4
+        },
+        "exhaust_turn_ofs": Vector2(3, 0),
+        "exhaust_turn_y_ofs": -5,
+    },
+    ShipType.ENERGY: {
+        "frames": {
+            Frames.FLAT: 8,
+            Frames.LEFT: 6,
+            Frames.RIGHT: 7
         },
         "exhaust_turn_ofs": Vector2(3, 0),
         "exhaust_turn_y_ofs": -5,
