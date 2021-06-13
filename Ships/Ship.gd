@@ -10,6 +10,7 @@ const SHIELD_DRAIN_RATE = 1
 const SHIELD_RECHARGE_RATE = 2
 const SHIELD_ACTIVATION_COST = 50
 const MAX_SHIELD = 300
+const INVIN_FRAMES = 20.0
 
 const MAX_HP = 100.0
 
@@ -74,6 +75,7 @@ const CONFIG = {
 var health := MAX_HP
 var fire_cooldown := 0
 var dead := false
+var dmg_cooldown := 0.0
 
 var left_exhaust_init_pos := Vector2()
 var right_exhaust_init_pos := Vector2()
@@ -96,6 +98,7 @@ func make_snapshot():
         "fire_cooldown": fire_cooldown,
         "ship_type": ship_type,
         "dead": dead,
+        "dmg_cooldown": dmg_cooldown
     }
 
 
@@ -107,6 +110,7 @@ func restore_snapshot(snapshot):
             "fire_cooldown": 0,
             "ship_type": ShipType.BULLET,
             "dead": true,
+            "dmg_cooldown": 0
         }
 
     set_health(snapshot["health"])
@@ -114,6 +118,7 @@ func restore_snapshot(snapshot):
     fire_cooldown = snapshot["fire_cooldown"]
     ship_type = snapshot["ship_type"]
     dead = snapshot["dead"]
+    dmg_cooldown = snapshot['dmg_cooldown']
 
 
 func damage_effect() -> void:
@@ -235,6 +240,10 @@ func run_step(inputs: InputState, delta: float) -> void:
 
     handle_fire(inputs.is_pressed(InputType.FIRE))
 
+    if dmg_cooldown > 0:
+        dmg_cooldown -= 1
+        print(dmg_cooldown)
+
     if health <= 0:
         emit_signal("death", position)
         dead = true
@@ -257,6 +266,9 @@ func set_label(text: String) -> void:
 func _on_area_shape_entered(_area_id: int, _area: Area2D, area_shape: int, _local_shape: int) -> void:
     var bullet = bullet_manager.get_bullet(area_shape)
     if !bullet.is_player:
-        damage_effect()
         bullet.dead = true
-        set_health(health - bullet.damage)
+
+        if dmg_cooldown <= 0:
+            damage_effect()
+            set_health(health - bullet.damage)
+            dmg_cooldown = INVIN_FRAMES
