@@ -40,7 +40,6 @@ const WAVES = [
 
 
 var enemies = []
-var frame_num := 0
 var wave_idx := 0
 var wave_active := false
 var spawn_timer := 0
@@ -64,7 +63,7 @@ func spawn_enemy_on_path(idx: String):
     enemies.append(enemy)
 
 
-func advance_waves():
+func advance_waves(frame_num: int):
     if wave_idx < len(WAVES) and !wave_active and frame_num > WAVES[wave_idx]["start"]:
         wave_active = true
         spawn_timer = 0
@@ -84,7 +83,7 @@ func advance_waves():
         spawn_timer -= 1
 
 
-func _physics_process(delta: float) -> void:
+func run_tick(delta: float, frame_num: int) -> void:
     var queued_for_destruction = []
     for enemy in enemies:
         if enemy.dead:
@@ -99,8 +98,7 @@ func _physics_process(delta: float) -> void:
         enemies.erase(enemy)
         enemy.queue_free()
 
-    frame_num += 1
-    advance_waves()
+    advance_waves(frame_num)
 
 
 #### snapshot
@@ -132,7 +130,6 @@ func make_snapshot():
 
     return {
         "enemies": enemies_snapshot,
-        "frame_num": frame_num,
         "wave_idx": wave_idx,
         "wave_active": wave_active,
         "spawn_timer": spawn_timer,
@@ -142,7 +139,6 @@ func make_snapshot():
 
 
 func restore_snapshot(snapshot):
-    frame_num = snapshot["frame_num"]
     wave_idx = snapshot["wave_idx"]
     wave_active = snapshot["wave_active"]
     spawn_timer = snapshot["spawn_timer"]

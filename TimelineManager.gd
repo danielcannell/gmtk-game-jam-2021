@@ -107,4 +107,7 @@ func _physics_process(delta: float) -> void:
         var state = tl.get_state(frame_num)
         ship.run_step(state, delta)
 
+    enemy_manager.run_tick(delta, frame_num)
+    bullet_manager.run_tick(delta, frame_num)
+
     frame_num += 1

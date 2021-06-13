@@ -60,7 +60,7 @@ func _exit_tree() -> void:
         Physics2DServer.free_rid((bullet as Bullet).shape_id)
     bullets.clear()
 
-func _physics_process(delta: float) -> void:
+func run_tick(delta: float, _frame_num: int) -> void:
 
     var used_transform = Transform2D()
     var bullets_queued_for_destruction = []
