@@ -28,24 +28,36 @@ func _ready():
         var p = Panel.instance()
         p.set_snapshot(ss, i)
         p.disabled = dead
+        p.connect("pressed", self, "start_timeline", [i])
         hbox.add_child(p)
 
 
+func start_timeline(idx: int) -> void:
+    if len(timelines) > idx:
+        Globals.live_timeline = idx
+        get_tree().change_scene("res://Main.tscn")
+
+
 func _unhandled_key_input(evt):
+    var KEYS = {
+        KEY_0: 0,
+        KEY_1: 1,
+        KEY_2: 2,
+        KEY_3: 3,
+        KEY_4: 4,
+        KEY_5: 5,
+        KEY_6: 6,
+        KEY_7: 7,
+        KEY_8: 8,
+        KEY_9: 9,
+    }
+
     if evt is InputEventKey and evt.pressed and !evt.echo:
         if evt.scancode == KEY_N:
             timelines.append(Timeline.new())
             Globals.live_timeline = len(timelines) - 1
             get_tree().change_scene("res://Main.tscn")
-        if evt.scancode == KEY_0:
-            if len(timelines) > 0:
-                Globals.live_timeline = 0
-                get_tree().change_scene("res://Main.tscn")
-        if evt.scancode == KEY_1:
-            if len(timelines) > 1:
-                Globals.live_timeline = 1
-                get_tree().change_scene("res://Main.tscn")
-        if evt.scancode == KEY_2:
-            if len(timelines) > 2:
-                Globals.live_timeline = 2
-                get_tree().change_scene("res://Main.tscn")
+        else:
+            for key in KEYS:
+                if evt.scancode == key:
+                    start_timeline(KEYS[key])
