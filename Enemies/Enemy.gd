@@ -6,7 +6,9 @@ const MAX_HP = 100.0
 
 onready var health_bar: Node2D = $HealthBar
 onready var area: Area2D = $Area2D
+onready var sprite = $Sprite
 onready var bullet_manager: BulletManager = $"../../../BulletManager"
+onready var tween = $Tween
 
 var health := MAX_HP
 var fire_cooldown := 0
@@ -54,8 +56,21 @@ func _on_area_shape_entered(_area_id: int, _area: Area2D, area_shape: int, _loca
     if bullet.is_player:
         bullet.dead = true
         set_health(health - bullet.damage)
+        damage_effect()
 
 
 func set_health(new_health: float) -> void:
     health = new_health
     health_bar.set_fraction(health / MAX_HP)
+
+
+func damage_effect() -> void:
+    var s= Color(1,1,1,1)
+    var e= Color(6,6,6,6)
+    tween.interpolate_property(sprite, "modulate",
+            s, e, 0.1)
+    tween.start()
+    yield(tween, "tween_completed")
+    tween.interpolate_property(sprite, "modulate",
+            e, s, 0.05)
+    tween.start()

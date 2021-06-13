@@ -2,6 +2,7 @@ extends Node
 
 
 const Ship = preload("res://Ships/Ship.tscn")
+const Explosion = preload("res://Effects/Explosion.tscn")
 
 onready var bullet_manager = $"../BulletManager"
 onready var enemy_manager = $"../EnemyManager"
@@ -13,6 +14,13 @@ onready var timelines = Globals.timelines
 var live_timeline: int = 0
 var ships: Array = []
 var frame_num: int = 0
+
+
+func _on_player_death(position):
+    var effect = Explosion.instance()
+    add_child(effect)
+    effect.position = position
+    effect.run()
 
 
 func _ready() -> void:
@@ -31,6 +39,7 @@ func _create_ships() -> void:
     for tl in timelines:
         var ship := Ship.instance()
         ship.connect("fire", bullet_manager, "spawn_bullet")
+        ship.connect("death", self, "_on_player_death")
         ships.append(ship)
         add_child(ship)
 

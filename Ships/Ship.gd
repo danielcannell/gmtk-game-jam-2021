@@ -1,4 +1,4 @@
-extends Area2D
+extends Node2D
 
 
 const HORIZONTAL_SPEED = 300
@@ -13,6 +13,7 @@ onready var right_exhuast = $RightExhaust;
 onready var image: AnimatedSprite = $Sprite
 onready var health_bar: Node2D = $HealthBar
 onready var bullet_manager: BulletManager = $"../../BulletManager"
+onready var tween = $Tween
 
 
 var health := MAX_HP
@@ -24,6 +25,7 @@ var exhaust_turn_ofs = Vector2(3, 0);
 
 
 signal fire(position, velocity)
+signal death(position)
 
 
 const FIRE_VECTOR = Vector2(0, -1)
@@ -62,6 +64,18 @@ func restore_snapshot(snapshot):
         queue_free()
 
 
+func damage_effect() -> void:
+    var s= Color(1,1,1,1)
+    var e= Color(6,6,6,6)
+    tween.interpolate_property(image, "modulate:a",
+            s, e, 0.1)
+    tween.start()
+    yield(tween, "tween_completed")
+    tween.interpolate_property(image, "modulate",
+            e, s, 0.1)
+    tween.start()
+
+
 func _ready():
     left_exhaust_init_pos = left_exhuast.position;
     right_exhaust_init_pos = right_exhuast.position;
@@ -71,7 +85,7 @@ func _ready():
     position.x = screen_size.x / 2
     position.y = screen_size.y - 100
 
-    self.connect("area_shape_entered", self, "_on_area_shape_entered")
+    $Area2D.connect("area_shape_entered", self, "_on_area_shape_entered")
 
 
 func run_step(inputs: InputState, delta: float) -> void:
@@ -112,8 +126,8 @@ func run_step(inputs: InputState, delta: float) -> void:
         left_exhuast.set_thrust(0.5)
         right_exhuast.set_thrust(0.5)
     elif velocity.y < 0:
-        left_exhuast.set_thrust(1.7)
-        right_exhuast.set_thrust(1.7)
+        left_exhuast.set_thrust(1.8)
+        right_exhuast.set_thrust(1.8)
 
     var screen_size = get_viewport_rect().size
 
@@ -129,6 +143,7 @@ func run_step(inputs: InputState, delta: float) -> void:
         fire_cooldown -= 1
 
     if health <= 0:
+        emit_signal("death", position)
         queue_free()
 
 
@@ -140,5 +155,6 @@ func set_health(new_health: float) -> void:
 func _on_area_shape_entered(_area_id: int, _area: Area2D, area_shape: int, _local_shape: int) -> void:
     var bullet = bullet_manager.get_bullet(area_shape)
     if !bullet.is_player:
+        damage_effect()
         bullet.dead = true
         set_health(health - bullet.damage)

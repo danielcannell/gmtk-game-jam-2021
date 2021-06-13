@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Art/ship-right.png" type="Texture" id=1]
 [ext_resource path="res://Ships/Ship.gd" type="Script" id=2]
@@ -6,6 +6,9 @@
 [ext_resource path="res://Art/ship.png" type="Texture" id=4]
 [ext_resource path="res://HealthBar.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Ships/Exhaust.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Art/shield-weap.png" type="Texture" id=7]
+[ext_resource path="res://Art/shield.png" type="Texture" id=8]
+[ext_resource path="res://Ships/Shield.gd" type="Script" id=9]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -18,9 +21,11 @@ animations = [ {
 [sub_resource type="CircleShape2D" id=2]
 radius = 30.6256
 
-[node name="Ship" type="Area2D"]
-collision_layer = 2
-collision_mask = 4
+[sub_resource type="CapsuleShape2D" id=3]
+radius = 13.9692
+height = 48.5977
+
+[node name="Ship" type="Node2D"]
 script = ExtResource( 2 )
 
 [node name="HealthBar" parent="." instance=ExtResource( 5 )]
@@ -31,7 +36,12 @@ position = Vector2( 0, -1.03938 )
 z_index = 1
 frames = SubResource( 1 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 0, 1 )
 shape = SubResource( 2 )
 
 [node name="RightExhaust" parent="." instance=ExtResource( 6 )]
@@ -41,3 +51,27 @@ scale = Vector2( 0.35, 0.3 )
 [node name="LeftExhaust" parent="." instance=ExtResource( 6 )]
 position = Vector2( -9.7, 27 )
 scale = Vector2( 0.35, 0.3 )
+
+[node name="ShieldEmitters" type="Sprite" parent="."]
+visible = false
+z_index = 1
+texture = ExtResource( 7 )
+offset = Vector2( 0, -4 )
+
+[node name="Shield" type="Area2D" parent="."]
+visible = false
+position = Vector2( -0.793701, 0 )
+collision_layer = 2
+collision_mask = 4
+script = ExtResource( 9 )
+
+[node name="Sprite" type="Sprite" parent="Shield"]
+position = Vector2( 0.623722, -33.6253 )
+texture = ExtResource( 8 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Shield"]
+position = Vector2( 0.199032, -44.6886 )
+rotation = 1.5708
+shape = SubResource( 3 )
+
+[node name="Tween" type="Tween" parent="."]
