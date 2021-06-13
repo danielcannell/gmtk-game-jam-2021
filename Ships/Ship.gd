@@ -11,6 +11,7 @@ const MAX_HP = 100.0
 onready var left_exhuast = $LeftExhaust;
 onready var right_exhuast = $RightExhaust;
 
+onready var shield = $Shield
 onready var image: AnimatedSprite = $Sprite
 onready var health_bar: Node2D = $HealthBar
 onready var bullet_manager: BulletManager = $"../../BulletManager"
@@ -155,9 +156,13 @@ func _update_ship(velocity: Vector2) -> void:
 
 
 func handle_fire(fire_pressed: bool):
-    if fire_pressed && fire_cooldown == 0:
-        emit_signal("fire", position, FIRE_VECTOR * FIRE_SPEED, true)
-        fire_cooldown = FIRE_COOLDOWN
+    match ship_type:
+        ShipType.BULLET:
+            if fire_pressed && fire_cooldown == 0:
+                emit_signal("fire", position, FIRE_VECTOR * FIRE_SPEED, true)
+                fire_cooldown = FIRE_COOLDOWN
+        ShipType.SHIELD:
+            shield.set_state(fire_pressed)
 
 
 func run_step(inputs: InputState, delta: float) -> void:
