@@ -48,7 +48,7 @@ func _draw():
         var ship_x = (scale * ss["frame_num"]) + line_start
         var color: Color = DEAD_COLOR if dead else ALIVE_COLOR
         draw_circle(Vector2(ship_x, LINE_Y), CIRCLE_RADIUS, color)
-        _draw_centered_text(FONT, Vector2(ship_x, LINE_Y-CIRCLE_RADIUS), "Ship " + str(i))
+        _draw_centered_text(FONT, Vector2(ship_x, LINE_Y-CIRCLE_RADIUS), "Ship " + str(i+1))
 
         # show ship stats
         # TODO
